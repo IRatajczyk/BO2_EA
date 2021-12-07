@@ -7,7 +7,8 @@ class MutationParameters:
     Class for coherent parameter definition for Mutation operator.
     """
 
-    def __init__(self, type_of_mutation:str , mutation_probability: float = .5, mu: float = 0, gamma: float = 1,
+    def __init__(self, type_of_mutation: str = "Cauchy", mutation_probability: float = .5,
+                 mu: float = 0, gamma: float = 1,
                  mean: float = 0, std: float = 1):
         """
         Class initializer for coherent parameter definition for Mutation operator.
@@ -20,20 +21,28 @@ class MutationParameters:
         """
         self.type_of_mutation = type_of_mutation
         self.mutation_probability = mutation_probability
-        if self.type_of_mutation == "Cauchy":
-            self.mu = mu
-            self.gamma = gamma
-        elif self.type_of_mutation == "Gaussian":
-            self.mean = mean
-            self.std = std
-        elif self.type_of_mutation == "Bit Negation":
-            self._bn = None
-        elif self.type_of_mutation == "Random Bit":
-            self._rb = None
+
+        self.mu = mu
+        self.gamma = gamma
+
+        self.mean = mean
+        self.std = std
+
+        self.check()
+
+    def check(self):
+        if self.std < 0 or self.gamma < 0:
+            if self.std < 0:
+                raise WrongParametersError(f"Standard deviation must be non negative (std = {self.std})")
+            else:
+                raise WrongParametersError(f"Gamma parameter must be non negative (std = {self.gamma})")
+        if self.type_of_mutation not in ("Gaussian", "Cauchy"):
+            pass #TODO: poprawić
 
 
 class Mutation:
     def __init__(self, parameters: MutationParameters):
+        self.type_of_mutation = parameters.type_of_mutation
         self.parameters = parameters
 
     def mutate(self, solution):
@@ -42,15 +51,35 @@ class Mutation:
         :param solution: Solution of a problem that is going to be mutated
         :return: Mutated solution
         """
-        if self.parameters.type_of_mutation == "Gaussian":
+        if self.type_of_mutation == "Gaussian":
             return self.__mutate_gaussian(solution)
-        elif self.parameters.type_of_mutation == "Cauchy":
+        elif self.type_of_mutation == "Cauchy":
             return self.__mutate_cauchy(solution)
+        elif self.type_of_mutation == "Bit negation":
+            return self.__mutate_bit_negation(solution)
+        elif self.type_of_mutation == "Random Bit":
+            return self.__mutate_random_bit(solution)
 
     def __mutate_gaussian(self, solution):
+        #TODO: poprawić
         solution += np.random.normal(self.parameters.mu, self.parameters.std, solution.shape)
         return solution
 
     def __mutate_cauchy(self, solution):
+        # TODO: poprawić
         solution += scipy.stats.cauchy.rvs(self.parameters.mu, self.parameters.std, solution.shape)
         return solution
+
+    def __mutate_bit_negation(self, solution):
+        # TODO: Uzupełnić
+        pass
+
+    def __mutate_random_bit(self, solution):
+        # TODO: Uzupełnić
+        pass
+
+
+class WrongParametersError(Exception):
+    def __init__(self, message):
+        self.message = message
+        super().__init__(self.message)

@@ -8,10 +8,15 @@ class TimeSeriesProcessing:
         self.model_type = parameters.model_type
         self.parameters = parameters
 
-    def process(self):
+    def process(self, data):
         if self.model_type == "ARIMA":
-            return self.__process_arima()
+            return self.__process_arima(data)
+        elif self.model_type == "NAIVE":
+            return self.__process_naive(data)
 
-    def __process_arima(self):
+    def __process_arima(self, data):
         return None
+
+    def __process_naive(self, data):
+        return data
 
