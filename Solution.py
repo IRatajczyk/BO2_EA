@@ -55,7 +55,7 @@ class Solution:
         return
 
     def __check_feasible_TSOCOV19D(self, solution) -> bool:
-        return np.all(np.cumsum(solution) >= -self.parameters.L_limit) and np.all(solution <= self.parameters.DL_limit)
+        return np.all(np.cumsum(solution) >= self.parameters.L_limit) and np.all(solution <= self.parameters.DL_limit)
 
 
 class WrongParametersError(Exception):
