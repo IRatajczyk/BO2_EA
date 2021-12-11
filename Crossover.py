@@ -24,8 +24,17 @@ class CrossoverParameters:
         self.check()
 
     def check(self):
-        # TODO: Uzupełnić
-        pass
+        impl_crossover_types = ("One point", "Two points", "Average", "Convex Combination", "Uniform")
+        impl_distribution_of_cut = ("Uniform",)
+        impl_alpha_distribution = ("Uniform",)
+        if self.type_of_crossover not in impl_crossover_types:
+            raise NotImplementedError(f"{self.type_of_crossover} type of crossover not implemented!")
+        if not 0 <= self.crossover_probability <= 1:
+            raise WrongParametersError(f"Probability value must be in <0, 1>!")
+        if self.distribution_of_cut not in impl_distribution_of_cut:
+            raise NotImplementedError(f"{self.distribution_of_cut} distribution of cut not implemented!")
+        if self.alpha_distribution not in impl_alpha_distribution:
+            raise NotImplementedError(f"{self.alpha_distribution} distribution of alpha parameter not implemented!")
 
 
 class Crossover:
@@ -54,7 +63,7 @@ class Crossover:
             x, y = solution1.copy(), solution2.copy()
             x[idx:], y[idx:] = solution2[idx:], solution1[idx:]
             return x, y
-        raise NotImplementedError(f"Crossing not implemented for {self.parameters.distribution_of_cut}!")
+        raise NotImplementedError(f"Crossover not implemented for {self.parameters.distribution_of_cut}!")
 
     def __cross_two_points(self, solution1, solution2):
         if self.parameters.distribution_of_cut == "Uniform":
@@ -64,7 +73,7 @@ class Crossover:
             x, y = solution1.copy(), solution2.copy()
             x[idx1:idx2], y[idx1:idx2] = solution2[idx1:idx2], solution1[idx1:idx2]
             return x, y
-        raise NotImplementedError(f"Crossing not implemented for {self.parameters.distribution_of_cut}!")
+        raise NotImplementedError(f"Crossover not implemented for {self.parameters.distribution_of_cut}!")
 
     def __cross_average(self, solution1, solution2):
         if self.parameters.distribution_of_cut == "Uniform":
@@ -72,17 +81,18 @@ class Crossover:
                 raise ValueError(f"Solution shapes {solution1.shape} and {solution2.shape} don't match!")
             x = (0.5 * solution1 + 0.5 * solution2).astype(int)
             return x, x
-        raise NotImplementedError(f"Crossing not implemented for {self.parameters.distribution_of_cut}!")
+        raise NotImplementedError(f"Crossover not implemented for {self.parameters.distribution_of_cut}!")
 
     def __cross_convex(self, solution1, solution2):
         if self.parameters.distribution_of_cut == "Uniform":
             if solution1.shape != solution2.shape:
                 raise ValueError(f"Solution shapes {solution1.shape} and {solution2.shape} don't match!")
-            alpha = np.random.rand()
+            if self.parameters.alpha_distribution == "Uniform":
+                alpha = np.random.rand()
             x = (alpha * solution1 + (1 - alpha) * solution2).astype(int)
             y = ((1 - alpha) * solution1 + alpha * solution2).astype(int)
             return x, y
-        raise NotImplementedError(f"Crossing not implemented for {self.parameters.distribution_of_cut}!")
+        raise NotImplementedError(f"Crossover not implemented for {self.parameters.distribution_of_cut}!")
 
     def __cross_uniform(self, solution1, solution2):
         if self.parameters.distribution_of_cut == "Uniform":
@@ -93,4 +103,10 @@ class Crossover:
             x = (solution1 * pat + solution2 * pat_neg).astype(int)
             y = (solution1 * pat_neg + solution2 * pat).astype(int)
             return x, y
-        raise NotImplementedError(f"Crossing not implemented for {self.parameters.distribution_of_cut}!")
+        raise NotImplementedError(f"Crossover not implemented for {self.parameters.distribution_of_cut}!")
+
+
+class WrongParametersError(Exception):
+    def __init__(self, message):
+        self.message = message
+        super().__init__(self.message)
