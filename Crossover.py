@@ -11,10 +11,10 @@ class CrossoverParameters:
                  alpha_distribution: str = "Uniform"):
         """
         Class initializer for coherent parameter definition for Crossover operator.
-        :param type_of_crossover:
-        :param crossover_probability:
-        :param distribution_of_cut:
-        :param alpha_distribution:
+        :param type_of_crossover: Specify the desired type of crossover, possible values: "One point", "Two points", "Average", "Convex Combination", "Uniform".
+        :param crossover_probability: Specify the probability of crossover.
+        :param distribution_of_cut: Specify the desired distribution of cut, possible values: "Uniform"
+        :param alpha_distribution: Specify the desired distribution of alpha parameter, assuming convex combination type of crossover.
         """
         self.type_of_crossover = type_of_crossover
         self.crossover_probability = crossover_probability
