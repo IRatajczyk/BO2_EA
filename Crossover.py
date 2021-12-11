@@ -14,7 +14,7 @@ class CrossoverParameters:
         :param type_of_crossover: Specify the desired type of crossover, possible values: "One point", "Two points", "Average", "Convex Combination", "Uniform".
         :param crossover_probability: Specify the probability of crossover.
         :param distribution_of_cut: Specify the desired distribution of cut, possible values: "Uniform"
-        :param alpha_distribution: Specify the desired distribution of alpha parameter, assuming convex combination type of crossover.
+        :param alpha_distribution: Specify the desired distribution of alpha parameter, assuming convex combination type of crossover. Possible values: "Uniform"
         """
         self.type_of_crossover = type_of_crossover
         self.crossover_probability = crossover_probability
