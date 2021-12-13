@@ -31,13 +31,14 @@ class MutationParameters:
         self.check()
 
     def check(self):
-        if self.std < 0 or self.gamma < 0:
-            if self.std < 0:
-                raise WrongParametersError(f"Standard deviation must be non negative (std = {self.std})")
-            else:
-                raise WrongParametersError(f"Gamma parameter must be non negative (std = {self.gamma})")
+        if self.std < 0:
+            raise WrongParametersError(f"Standard deviation must be non negative (std = {self.std})")
+        if self.gamma < 0:
+            raise WrongParametersError(f"Gamma parameter must be non negative (std = {self.gamma})")
+        if not 0 <= self.mutation_probability <= 1:
+            raise WrongParametersError(f"Mutation probability must be in <0, 1>!")
         if self.type_of_mutation not in ("Gaussian", "Cauchy"):
-            pass #TODO: poprawić
+            raise NotImplementedError(f"Mutation not implemented for {self.type_of_mutation} type!")
 
 
 class Mutation:
@@ -61,14 +62,10 @@ class Mutation:
             return self.__mutate_random_bit(solution)
 
     def __mutate_gaussian(self, solution):
-        #TODO: poprawić
-        solution += np.random.normal(self.parameters.mu, self.parameters.std, solution.shape)
-        return solution
+        return (solution + np.random.normal(self.parameters.mean, self.parameters.std, solution.shape)).astype(int)
 
     def __mutate_cauchy(self, solution):
-        # TODO: poprawić
-        solution += scipy.stats.cauchy.rvs(self.parameters.mu, self.parameters.std, solution.shape)
-        return solution
+        return (solution + scipy.stats.cauchy.rvs(self.parameters.mu, self.parameters.gamma, solution.shape)).astype(int)
 
     def __mutate_bit_negation(self, solution):
         # TODO: Uzupełnić
