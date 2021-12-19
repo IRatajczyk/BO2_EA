@@ -43,6 +43,10 @@ class Solution:
         if self.problem_name == "TSOCOV19D":
             return self.__check_feasible_TSOCOV19D(solution)
 
+    def cast_feasible(self, solution):
+
+        return
+
     def __create_feasible_TSOCOV(self):
         solution = np.zeros(self.parameters.solution_size)
         limit = self.parameters.L0

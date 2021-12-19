@@ -7,6 +7,18 @@ import Selection
 import Crossover
 import Mutation
 
+import numpy as np
+from pmdarima import model_selection
+import pmdarima as pm
+import pandas as pd
+from pandas import DataFrame
+import datetime
+from matplotlib import pyplot
+import matplotlib.pyplot as plt
+from statsmodels.tsa.stattools import adfuller
+from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
+from statsmodels.tsa.arima.model import ARIMA
+
 
 """
 It is worth noticing that solutions are kept in a list of lists L such that L = [solution (np.array(); size = 365) ,fitness (float)]
