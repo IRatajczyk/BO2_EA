@@ -32,6 +32,7 @@
 
   "type_of_selection": "Roulette",
   "elite": true,
+  "truncation": false,
   "elite_count": 10,
   "k": 10,
   "p": 0.7,

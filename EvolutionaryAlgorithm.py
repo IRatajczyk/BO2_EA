@@ -96,14 +96,15 @@ class EvolutionaryAlgorithm:
             for i in range(0, self.algorithm_parameters.population_number, 2):
                 if np.random.rand() <= self.crossover_parameters.crossover_probability:
                     crossover_result = self.crossover.cross(self.population[i][0], self.population[i + 1][0])
-                    self.population.append([crossover_result, 0])
+                    self.population.append([crossover_result[0], 0])
+                    self.population.append([crossover_result[1], 0])
 
             for i, solution in enumerate(self.population):
                 if np.random.rand() <= self.mutation_parameters.mutation_probability:
                     self.population[i][0] = self.mutation.mutate(solution[0])
 
             self.proceed_fitness()
-            self.population = self.selection.select(self.population + self.elite)
+            self.population = self.selection.select(self.population + self.elite, fixed_len=self.algorithm_parameters.population_number)
             self.elite = self.selection.select_elite(self.population + self.elite)
 
             population_fitness = [genome[1] for genome in self.population]

@@ -24,7 +24,7 @@ class CrossoverParameters:
         self.check()
 
     def check(self):
-        impl_crossover_types = ("One point", "Two points", "Average", "Convex Combination", "Uniform")
+        impl_crossover_types = ("One Point", "Two Points", "Average", "Convex Combination", "Uniform")
         impl_distribution_of_cut = ("Uniform",)
         impl_alpha_distribution = ("Uniform", "Arcsine")
         if self.type_of_crossover not in impl_crossover_types:
@@ -50,7 +50,7 @@ class Crossover:
             return self.__cross_two_points(solution1, solution2)
         elif self.type_of_crossover == "Average":
             return self.__cross_average(solution1, solution2)
-        elif self.type_of_crossover == "Convex combination":
+        elif self.type_of_crossover == "Convex Combination":
             return self.__cross_convex(solution1, solution2)
         elif self.type_of_crossover == "Uniform":
             return self.__cross_uniform(solution1, solution2)

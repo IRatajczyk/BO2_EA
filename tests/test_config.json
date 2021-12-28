@@ -32,12 +32,13 @@
 
   "type_of_selection": "Roulette",
   "elite": true,
+  "truncation": false,
   "elite_count": 10,
   "k": 10,
   "p": 0.7,
   "proportion": 0.25,
 
-  "type_of_crossover": "Convex Combination",
+  "type_of_crossover": "One Point",
   "crossover_probability": 0.5,
   "distribution_of_cut": "Uniform",
   "alpha_distribution": "Uniform",
