@@ -23,5 +23,5 @@ class TimeSeries:
         pass
 
     def __read_forecast(self):
-        if os.path.isfile("predictions.csv"):
-            return pd.read_csv("predictions.csv")
+        if os.path.isfile("data/predictions.csv"):
+            return pd.read_csv("data/predictions.csv")

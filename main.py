@@ -18,7 +18,7 @@ if __name__ == "__main__":
     TS_param = TimeSeriesProcessing.TimeSeriesProcessingParameters(model_type="ARIMA")
     TS = TimeSeriesProcessing.TimeSeries(TS_param)
 
-    params = utils.load_config() if os.path.isfile("config.json") else dict()
+    params = utils.load_config() if os.path.isfile("data/config.json") else dict()
     params["time_series"] = TS.get_forecast()
 
     EA_param = EvolutionaryAlgorithm.EvolutionaryAlgorithmParameters(**params)
