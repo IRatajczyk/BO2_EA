@@ -1,22 +1,27 @@
+import os
+import pandas as pd
+
+
 class TimeSeriesProcessingParameters:
     def __init__(self, model_type: str = "ARIMA"):
         self.model_type = model_type
 
 
-class TimeSeriesProcessing:
+class TimeSeries:
     def __init__(self, parameters: TimeSeriesProcessingParameters):
         self.model_type = parameters.model_type
-        self.parameters = parameters
+        self.original_data = self.__read_original_data()
+        self.forecast = self.__read_forecast()
 
-    def process(self, data):
-        if self.model_type == "ARIMA":
-            return self.__process_arima(data)
-        elif self.model_type == "NAIVE":
-            return self.__process_naive(data)
+    def get_forecast(self):
+        return self.forecast.values
 
-    def __process_arima(self, data):
-        return None
+    def get_original_data(self):
+        return self.original_data.values
 
-    def __process_naive(self, data):
-        return data
+    def __read_original_data(self):
+        pass
 
+    def __read_forecast(self):
+        if os.path.isfile("predictions.csv"):
+            return pd.read_csv("predictions.csv")

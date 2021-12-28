@@ -8,13 +8,18 @@ import Crossover
 import Mutation
 import utils
 import os
+import TimeSeriesProcessing
 
 """
 It is worth noticing that solutions are kept in a list of lists L such that L = [solution (np.array(); size = 365) ,fitness (float)]
 """
 
 if __name__ == "__main__":
+    TS_param = TimeSeriesProcessing.TimeSeriesProcessingParameters(model_type="ARIMA")
+    TS = TimeSeriesProcessing.TimeSeries(TS_param)
+
     params = utils.load_config() if os.path.isfile("config.json") else dict()
+    params["time_series"] = TS.get_forecast()
 
     EA_param = EvolutionaryAlgorithm.EvolutionaryAlgorithmParameters(**params)
     EA = EvolutionaryAlgorithm.EvolutionaryAlgorithm(EA_param)
@@ -40,4 +45,4 @@ if __name__ == "__main__":
     EA.set_mutation(Mut)
     EA.set_crossover(X)
 
-    EA.proceed()
+    print(EA.proceed())

@@ -50,14 +50,14 @@ class Selection:
     def select_elite(self, population):
         if self.parameters.elite:
             sorted_by_fitness = sorted(population, key=lambda genome: genome[1], reverse=True)
-            return [genome[0] for genome in sorted_by_fitness[:self.parameters.elite_count]]
+            return sorted_by_fitness[:self.parameters.elite_count]
 
     def __select_roulette(self, population):
-        solutions = np.array([genome[0] for genome in population])
+        pop_copy = np.array(population, dtype=object)
         probs = np.array([genome[1] for genome in population])
         probs = probs / probs.sum()
-        indices = np.random.choice(solutions.shape[0], size=len(population), p=probs)
-        return list(solutions[indices, :])
+        indices = np.random.choice(probs.shape[0], size=len(population), p=probs)
+        return list(pop_copy[indices, :])
 
     def __select_tournament(self, population):
         probs = [self.parameters.p * np.power(1 - self.parameters.p, i) for i in range(self.parameters.k)]

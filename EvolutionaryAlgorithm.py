@@ -42,10 +42,9 @@ class EvolutionaryAlgorithm:
         self.solution_parameters = None
 
         self.population = []
-        self.temporal_population = None
-        self.offspring = None
-
         self.elite = []
+        self.best_fitness_history = []
+        self.average_fitness_history = []
 
         self.fitness_function = None
         self.fitness_function_parameters = None
@@ -80,14 +79,41 @@ class EvolutionaryAlgorithm:
         self.selection = selection
         self.selection_parameters = selection.parameters
 
-    def proceed(self):  #TODO
+    def get_time(self):
+        return self.time
+
+    def get_best_fitness_history(self):
+        return self.best_fitness_history
+
+    def proceed(self):  # ???
         self.generate_population()
+        self.proceed_fitness()
+        self.elite = self.selection.select_elite(self.population)
+
         while self.not_stop():
             self.time += 1
+
+            for i in range(0, self.algorithm_parameters.population_number, 2):
+                if np.random.rand() <= self.crossover_parameters.crossover_probability:
+                    crossover_result = self.crossover.cross(self.population[i][0], self.population[i + 1][0])
+                    self.population.append([crossover_result, 0])
+
+            for i, solution in enumerate(self.population):
+                if np.random.rand() <= self.mutation_parameters.mutation_probability:
+                    self.population[i][0] = self.mutation.mutate(solution[0])
+
             self.proceed_fitness()
+            self.population = self.selection.select(self.population + self.elite)
+            self.elite = self.selection.select_elite(self.population + self.elite)
 
+            population_fitness = [genome[1] for genome in self.population]
+            best_fitness = self.elite[0][1] if self.selection_parameters.elite else max(population_fitness)
+            average_fitness = sum(population_fitness) / len(population_fitness)
+            self.best_fitness_history.append(best_fitness)
+            self.average_fitness_history.append(average_fitness)
 
-
+        best_solution = sorted(self.population + self.elite, key=lambda genome: genome[1], reverse=True)[0]
+        return best_solution[0]
 
     def generate_population(self) -> None:
         if self.population is None:
