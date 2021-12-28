@@ -10,7 +10,7 @@ class FitnessFunctionParameters:
                  death_probability: float = 0, cost_of_death: float = 0, training_cost: float = 0,
                  swabs_per_day: int = 0,
                  delay=0, cost_of_non_immediate_swab: float = 0, days_for_swab: int = 14, delayed_cost: bool = True,
-                 time_series=None, learning_type: str = None, learning_parameter: float = 0):
+                 time_series=None, learning_type: str = None, learning_parameter: float = 0, **kwargs):
         """
         Class initializer for coherent parameter definition for Fitness Function.
         :param name_of_fitness_function: Specify the desired Fitness Function, possible values: "TimeSeriesCovidProblem"

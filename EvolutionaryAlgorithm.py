@@ -10,7 +10,7 @@ class EvolutionaryAlgorithmParameters:
     def __init__(self, allow_eps_ff_stop: bool = False, eps_ff: float = 1e-6, eps_ff_type: str = "Average",
                  allow_no_iter_stop: bool = True, no_iter: int = 1e6,
                  allow_indifferent_population_stop: bool = False, population_diversity_measure: str = "Std of FF",
-                 pop_div_eps: float = 1e-2, population_number: int = 50):
+                 pop_div_eps: float = 1e-2, population_number: int = 50, **kwargs):
         self.allow_eps_ff_stop = allow_eps_ff_stop
         self.eps_ff = eps_ff
         self.eps_ff_type = eps_ff_type
@@ -45,6 +45,8 @@ class EvolutionaryAlgorithm:
         self.temporal_population = None
         self.offspring = None
 
+        self.elite = []
+
         self.fitness_function = None
         self.fitness_function_parameters = None
         self.recent_ff_value = np.inf
@@ -78,12 +80,14 @@ class EvolutionaryAlgorithm:
         self.selection = selection
         self.selection_parameters = selection.parameters
 
-    def proceed(self):
+    def proceed(self):  #TODO
         self.generate_population()
-        print(len(self.population))
-        self.proceed_fitness()
-        while self.not_stop(self.time):
+        while self.not_stop():
             self.time += 1
+            self.proceed_fitness()
+
+
+
 
     def generate_population(self) -> None:
         if self.population is None:
@@ -96,11 +100,11 @@ class EvolutionaryAlgorithm:
         for idx, solution in enumerate(self.population):
             self.population[idx][1] = self.fitness_function.calculate_fitness(solution[0])
 
-    def not_stop(self, iteration) -> bool:
+    def not_stop(self) -> bool:
         ff_eps_cond = (not self.algorithm_parameters.allow_eps_ff_stop) \
                       and self.__fitness_function_std() > self.algorithm_parameters.eps_ff
         no_iter = (not self.algorithm_parameters.allow_no_iter_stop) \
-                  and self.algorithm_parameters.no_iter > iteration
+                  and self.algorithm_parameters.no_iter > self.time
         indiff_popul = (not self.algorithm_parameters.allow_indifferent_population_stop) \
                        and self.population_diversity() > self.algorithm_parameters.pop_div_eps
         return ff_eps_cond and no_iter and indiff_popul

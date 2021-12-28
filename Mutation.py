@@ -9,7 +9,7 @@ class MutationParameters:
 
     def __init__(self, type_of_mutation: str = "Cauchy", mutation_probability: float = .5,
                  mu: float = 0, gamma: float = 1,
-                 mean: float = 0, std: float = 1):
+                 mean: float = 0, std: float = 1, **kwargs):
         """
         Class initializer for coherent parameter definition for Mutation operator.
         :param type_of_mutation: Specify the desired operator of mutation, possible values: "Cauchy","Gaussian","Bit negation"

@@ -4,7 +4,7 @@ from numpy.random import default_rng
 
 class SolutionParameters:
     def __init__(self, problem_name="TSOCOV19D", create_feasible: bool = True, solution_size: int = 365,
-                 L_limit: int = 0, DL_limit: float = 0, L0: int = 0):
+                 L_limit: int = 0, DL_limit: float = 0, L0: int = 0, **kwargs):
         self.problem_name = problem_name
         if self.problem_name == "TSOCOV19D":
             self.solution = np.array(solution_size)

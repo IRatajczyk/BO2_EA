@@ -3,17 +3,19 @@ import numpy as np
 
 class SelectionParameters:
 
-    def __init__(self, type_of_selection: str = "Elitism", elite_count: int = 10,
-                 k: int = 10, p: float = 0.7, proportion: float = 0.25):
+    def __init__(self, type_of_selection: str = "Roulette", elite: bool = True, elite_count: int = 10,
+                 k: int = 10, p: float = 0.7, proportion: float = 0.25, **kwargs):
         """
         :param type_of_selection: Specify type of selection, possible values: "Elitism", "Roulette", "Truncation", "Tournament", "Boltzmann".
         :param elite_count: ???
         :param k: the tournament size, assuming tournament selection
+        :param elite: #TODO
         :param p: probability of choosing the best individual, assuming tournament selection
         :param proportion: Specify the proportion of the fittest individuals to be selected and reproduced, assuming truncation selection.
         """
         self.type_of_selection = type_of_selection
-        self.elite_count = elite_count
+        self.elite = elite
+        self.elite_count = elite_count if elite else 0
         self.k = k
         self.p = p
         self.proportion = proportion
@@ -38,21 +40,17 @@ class Selection:
         self.parameters = parameters
 
     def select(self, population):
-        if self.type_of_selection == "Elitism":
-            return self.__select_elite(population)
-        elif self.type_of_selection == "Roulette":
+        if self.type_of_selection == "Roulette":
             return self.__select_roulette(population)
-        elif self.type_of_selection == "Truncation":
-            return self.__select_truncation(population)
         elif self.type_of_selection == "Tournament":
             return self.__select_tournament(population)
         elif self.type_of_selection == "Boltzmann":
             return self.__select_boltzmann(population)
 
-    def __select_elite(self, population):
-        sorted_by_fitness = sorted(population, key=lambda genome: genome[1], reverse=True)
-        # JAK DOPELNIAC????
-        return [genome[0] for genome in sorted_by_fitness[:self.parameters.elite_count]]
+    def select_elite(self, population):
+        if self.parameters.elite:
+            sorted_by_fitness = sorted(population, key=lambda genome: genome[1], reverse=True)
+            return [genome[0] for genome in sorted_by_fitness[:self.parameters.elite_count]]
 
     def __select_roulette(self, population):
         solutions = np.array([genome[0] for genome in population])
@@ -75,7 +73,7 @@ class Selection:
         return selection
 
     def __select_truncation(self, population):
-        elite = self.__select_elite(population)
+        elite = self.select_elite(population)
         more_elite = list(elite[:int(self.parameters.proportion * len(elite))])
         return more_elite * int(1 / self.parameters.proportion)
 

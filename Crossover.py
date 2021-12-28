@@ -9,7 +9,7 @@ class CrossoverParameters:
 
     def __init__(self, type_of_crossover: str = "Convex Combination", crossover_probability: float = 0.5,
                  distribution_of_cut: str = "Uniform",
-                 alpha_distribution: str = "Uniform"):
+                 alpha_distribution: str = "Uniform", **kwargs):
         """
         Class initializer for coherent parameter definition for Crossover operator.
         :param type_of_crossover: Specify the desired type of crossover, possible values: "One point", "Two points", "Average", "Convex Combination", "Uniform".
