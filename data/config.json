@@ -18,9 +18,9 @@
 
   "name_of_fitness_function": "TimeSeriesCovidProblemNaive",
   "worker_cost": 50,
-  "death_probability": 0.5,
-  "cost_of_death": 100,
-  "training_cost": 20,
+  "death_probability": 0.05,
+  "cost_of_death": 10,
+  "training_cost": 200,
   "swabs_per_day": 100,
   "delay": 1,
   "cost_of_non_immediate_swab": 100,
