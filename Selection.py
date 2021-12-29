@@ -58,7 +58,8 @@ class Selection:
         if fixed_len is None:
             fixed_len = len(population)
         pop_copy = np.array(population, dtype=object)
-        probs = np.array([genome[1] for genome in population])
+        probs = -1 * np.array([genome[1] for genome in population])
+        probs = probs - probs.min()
         probs = probs / probs.sum()
         indices = np.random.choice(probs.shape[0], size=fixed_len, p=probs)
         return list(pop_copy[indices, :])
@@ -71,7 +72,7 @@ class Selection:
         selection = list()
         while len(selection) != fixed_len:
             indices = np.random.choice(len(population), size=self.parameters.k, replace=True)
-            tournament = np.array(sorted(population[indices, :], key=lambda x: x[1], reverse=False), dtype=object)
+            tournament = np.array(sorted(population[indices, :], key=lambda x: x[1]), dtype=object)
             for i, prob in enumerate(probs):
                 if np.random.rand() <= prob:
                     selection.append(tournament[i, :])
@@ -79,7 +80,7 @@ class Selection:
         return selection
 
     def __select_elite(self, population):
-        sorted_by_fitness = sorted(population, key=lambda genome: genome[1], reverse=False)
+        sorted_by_fitness = sorted(population, key=lambda genome: genome[1])
         return sorted_by_fitness[:self.parameters.elite_count]
 
     def __select_truncation(self, population):
