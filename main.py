@@ -46,3 +46,4 @@ if __name__ == "__main__":
     EA.set_crossover(X)
 
     print(EA.proceed())
+    print(EA.get_time())

@@ -14,7 +14,7 @@ class TimeSeries:
         self.forecast = self.__read_forecast()
 
     def get_forecast(self):
-        return self.forecast.values
+        return self.forecast.values.reshape(-1)
 
     def get_original_data(self):
         return self.original_data.values
@@ -24,4 +24,4 @@ class TimeSeries:
 
     def __read_forecast(self):
         if os.path.isfile("data/predictions.csv"):
-            return pd.read_csv("data/predictions.csv")
+            return pd.read_csv("data/predictions.csv", index_col=0)

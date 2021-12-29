@@ -129,11 +129,11 @@ class EvolutionaryAlgorithm:
 
     def not_stop(self) -> bool:
         ff_eps_cond = (not self.algorithm_parameters.allow_eps_ff_stop) \
-                      and self.__fitness_function_std() > self.algorithm_parameters.eps_ff
+                      or self.__fitness_function_std() > self.algorithm_parameters.eps_ff
         no_iter = (not self.algorithm_parameters.allow_no_iter_stop) \
-                  and self.algorithm_parameters.no_iter > self.time
+                  or self.algorithm_parameters.no_iter > self.time
         indiff_popul = (not self.algorithm_parameters.allow_indifferent_population_stop) \
-                       and self.population_diversity() > self.algorithm_parameters.pop_div_eps
+                       or self.population_diversity() > self.algorithm_parameters.pop_div_eps
         return ff_eps_cond and no_iter and indiff_popul
 
     def population_diversity(self) -> float:
