@@ -13,8 +13,8 @@
   "create_feasible": true,
   "solution_size": 365,
   "L_limit": 0,
-  "DL_limit": 500,
-  "L0": 400,
+  "DL_limit": 50,
+  "L0": 40,
 
   "name_of_fitness_function": "TimeSeriesCovidProblemNaive",
   "worker_cost": 1,
