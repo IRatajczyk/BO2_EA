@@ -4,7 +4,7 @@ import FitnessFunction
 
 
 class HybridOptimizerParameters:
-    def __init__(self, type_of_hybrid: str = "Feasible greedy", **kwargs):
+    def __init__(self, type_of_hybrid: str = "Feasible extremely greedy", **kwargs):
         self.type_of_hybrid = type_of_hybrid
 
     def check(self):
@@ -29,13 +29,13 @@ class HybridOptimizer:
     def __feasible_greedy_optimizer(self, solution):
         ff = self.fitness_function.calculate_fitness(solution)
         DL = self.solution_parameters.DL_limit
-        for idx in range(1, self.solution_parameters.solution_size - 1):
-            cumulative_sum = np.cumsum(solution)[idx] + self.solution_parameters.L0
+        for idx in range(1, self.solution_parameters.solution_size):
+            cumulative_sum = np.cumsum(solution)[idx-1] + self.solution_parameters.L0
             for d in range(-cumulative_sum, DL):
-                old_sol = solution
+                old_sol = solution.copy()
                 solution[idx] = d
                 new_sol = solution if self.solution.check_feasibility(solution) else old_sol
-                new_ff = self.fitness_function.calculate_fitness(solution)
+                new_ff = self.fitness_function.calculate_fitness(new_sol)
                 (solution, ff) = (new_sol, new_ff) if new_ff < ff else (old_sol, ff)
         return solution, ff
 
@@ -46,12 +46,12 @@ class HybridOptimizer:
         while change:
             change = False
             for idx in range(1, self.solution_parameters.solution_size - 1):
-                cumulative_sum = np.sum(solution[:idx])+self.solution_parameters.L0
-                for d in range(-cumulative_sum - solution[idx], DL - solution[idx]):
-                    old_sol = solution
+                cumulative_sum = np.cumsum(solution)[idx-1] + self.solution_parameters.L0
+                for d in range(-cumulative_sum, DL):
+                    old_sol = solution.copy()
                     solution[idx] = d
                     new_sol = solution if self.solution.check_feasibility(solution) else old_sol
-                    new_ff = self.fitness_function.calculate_fitness(solution)
-                    (solution, ff, change) = (new_sol, new_ff, False) if new_ff < ff else (old_sol, ff, False)
+                    new_ff = self.fitness_function.calculate_fitness(new_sol)
+                    (solution, ff, change) = (new_sol, new_ff, True) if new_ff < ff else (old_sol, ff, False)
 
         return solution, ff

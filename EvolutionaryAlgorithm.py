@@ -124,11 +124,11 @@ class EvolutionaryAlgorithm:
             self.best_fitness_history.append(best_fitness)
             self.average_fitness_history.append(average_fitness)
 
-        best_solution = sorted(self.population + self.elite, key=lambda genome: genome[1], reverse=False)[0]
-        print(best_solution[1], self.solution.check_feasibility(best_solution[0]))
+        best_solution, best_fitness = sorted(self.population + self.elite, key=lambda genome: genome[1], reverse=False)[0]
+        print(best_fitness, self.solution.check_feasibility(best_solution))
         if self.algorithm_parameters.hybrid_optimizer:
-            best_solution = self.hybrid_optimizer.optimize(best_solution[0])
-        return self.solution.get_solution(best_solution[0]), self.solution.check_feasibility(best_solution[0]), np.sum(best_solution[1])
+            best_solution, best_fitness = self.hybrid_optimizer.optimize(best_solution)
+        return self.solution.get_solution(best_solution), self.solution.check_feasibility(best_solution), np.sum(best_fitness)
 
     def generate_population(self) -> None:
         if self.population is None:
