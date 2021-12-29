@@ -44,10 +44,10 @@ class Solution:
             return self.__check_feasible_TSOCOV19D(solution)
 
     def cast_feasible(self, solution):
-        limit = self.parameters.L0
+        limit = self.parameters.L_limit - self.parameters.L0
         for i in range(self.parameters.solution_size):
             solution[i] = solution[i] if solution[i] <= self.parameters.DL_limit else self.parameters.DL_limit
-            solution[i] = solution[i] if solution[i] >= self.parameters.L_limit - limit else self.parameters.L_limit - limit
+            solution[i] = solution[i] if solution[i] >= limit - np.cumsum(solution)[i-1] else limit - np.cumsum(solution)[i-1]
             limit += solution[i]
         return solution
 

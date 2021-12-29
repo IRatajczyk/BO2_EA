@@ -1,3 +1,5 @@
+from timeit import timeit
+
 import numpy as np
 from matplotlib import pyplot as plt
 import EvolutionaryAlgorithm
@@ -10,6 +12,7 @@ import HybridOptimizer
 import utils
 import os
 import TimeSeriesProcessing
+import time
 
 """
 It is worth noticing that solutions are kept in a list of lists L such that L = [solution (np.array(); size = 365) ,fitness (float)]
@@ -50,5 +53,8 @@ if __name__ == "__main__":
     EA.set_crossover(X)
     EA.set_hybrid_optimizer(H)
 
+    start = time.time()
     print(EA.proceed())
     print(EA.get_time())
+    end = time.time()
+    print("Optimization took "+str(int(end - start))+"s to complete")

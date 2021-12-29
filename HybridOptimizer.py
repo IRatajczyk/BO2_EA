@@ -9,7 +9,7 @@ class HybridOptimizerParameters:
 
     def check(self):
         if self.type_of_hybrid not in ("Feasible greedy",):
-            raise NotImplementedError(f"Mutation not implemented for {self.type_of_hybrid} type!")
+            raise NotImplementedError(f"Hybrid Optimizer not implemented for {self.type_of_hybrid} type!")
 
 
 class HybridOptimizer:
