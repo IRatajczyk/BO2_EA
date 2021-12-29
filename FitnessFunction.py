@@ -1,4 +1,5 @@
 import numpy as np
+import Solution
 
 
 class FitnessFunctionParameters:
@@ -46,8 +47,9 @@ class FitnessFunctionParameters:
 
 
 class FitnessFunction:
-    def __init__(self, parameters: FitnessFunctionParameters):
+    def __init__(self, parameters: FitnessFunctionParameters, solution: Solution.Solution):
         self.parameters = parameters
+        self.solution = solution
 
     def calculate_fitness(self, solution) -> float:
         if self.parameters.name_of_fitness_function == "TimeSeriesCovidProblem":
@@ -56,7 +58,7 @@ class FitnessFunction:
             return self.__calculate_cov19_naive_ff(solution)
 
     def __calculate_cov19_ff(self, solution) -> float:
-        L = np.cumsum(solution)
+        L = self.solution.get_solution(solution)[0]
         chi = self.parameters.time_series
         X = self.parameters.worker_cost
         Y = self.parameters.cost_of_non_immediate_swab
@@ -85,7 +87,7 @@ class FitnessFunction:
         return J
 
     def __calculate_cov19_naive_ff(self, solution) -> float:
-        L = np.cumsum(solution)
+        L = self.solution.get_solution(solution)[0]
         chi = self.parameters.time_series
         X = self.parameters.worker_cost
         Y = self.parameters.death_probability * self.parameters.cost_of_death

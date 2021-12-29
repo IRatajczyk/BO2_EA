@@ -29,7 +29,7 @@ if __name__ == "__main__":
     Sol = Solution.Solution(Sol_param)
 
     FF_param = FitnessFunction.FitnessFunctionParameters(**params)
-    FF = FitnessFunction.FitnessFunction(FF_param)
+    FF = FitnessFunction.FitnessFunction(FF_param, Sol)
 
     Sel_param = Selection.SelectionParameters(**params)
     Sel = Selection.Selection(Sel_param)

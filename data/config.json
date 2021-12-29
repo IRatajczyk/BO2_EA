@@ -17,10 +17,10 @@
   "L0": 40,
 
   "name_of_fitness_function": "TimeSeriesCovidProblemNaive",
-  "worker_cost": 1,
+  "worker_cost": 50,
   "death_probability": 0.5,
   "cost_of_death": 100,
-  "training_cost": 1,
+  "training_cost": 20,
   "swabs_per_day": 100,
   "delay": 1,
   "cost_of_non_immediate_swab": 100,
@@ -39,7 +39,7 @@
   "proportion": 0.25,
 
   "type_of_crossover": "Convex Combination",
-  "crossover_probability": 0.3,
+  "crossover_probability": 0.7,
   "distribution_of_cut": "Uniform",
   "alpha_distribution": "Uniform",
 
