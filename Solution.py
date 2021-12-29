@@ -4,7 +4,7 @@ from numpy.random import default_rng
 
 class SolutionParameters:
     def __init__(self, problem_name="TSOCOV19D", create_feasible: bool = True, solution_size: int = 365,
-                 L_limit: int = 0, DL_limit: float = 0, L0: int = 0, **kwargs):
+                 L_limit: int = 0, DL_limit: int = 0, L0: int = 0, **kwargs):
         self.problem_name = problem_name
         if self.problem_name == "TSOCOV19D":
             self.solution = np.array(solution_size)
@@ -44,8 +44,15 @@ class Solution:
             return self.__check_feasible_TSOCOV19D(solution)
 
     def cast_feasible(self, solution):
+        limit = self.parameters.L0
+        for i in range(self.parameters.solution_size):
+            solution[i] = solution[i] if solution[i] <= self.parameters.DL_limit else self.parameters.DL_limit
+            solution[i] = solution[i] if solution[i] >= self.parameters.L_limit - limit else self.parameters.L_limit - limit
+            limit += solution[i]
+        return solution
 
-        return
+    def get_solution(self, solution):
+        return np.cumsum(solution)+self.parameters.L0
 
     def __create_feasible_TSOCOV(self):
         solution = np.zeros(self.parameters.solution_size)
@@ -55,11 +62,12 @@ class Solution:
             limit += solution[i]
         return solution
 
+
     def __create_non_feasible_TSOCOV(self):
         return
 
     def __check_feasible_TSOCOV19D(self, solution) -> bool:
-        return np.all(np.cumsum(solution) >= self.parameters.L_limit) and np.all(solution <= self.parameters.DL_limit)
+        return np.all(np.cumsum(solution)+self.parameters.L0 >= self.parameters.L_limit) and np.all(solution <= self.parameters.DL_limit)
 
 
 class WrongParametersError(Exception):

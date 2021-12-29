@@ -37,7 +37,7 @@ class MutationParameters:
             raise WrongParametersError(f"Gamma parameter must be non negative (std = {self.gamma})")
         if not 0 <= self.mutation_probability <= 1:
             raise WrongParametersError(f"Mutation probability must be in <0, 1>!")
-        if self.type_of_mutation not in ("Gaussian", "Cauchy"):
+        if self.type_of_mutation not in ("Gaussian", "Cauchy", "Feasible COV"):
             raise NotImplementedError(f"Mutation not implemented for {self.type_of_mutation} type!")
 
 
@@ -60,6 +60,8 @@ class Mutation:
             return self.__mutate_bit_negation(solution)
         elif self.type_of_mutation == "Random Bit":
             return self.__mutate_random_bit(solution)
+        elif self.type_of_mutation == "Feasible COV":
+            return self.__mutate_feasible_COV(solution)
 
     def __mutate_gaussian(self, solution):
         return (solution + np.random.normal(self.parameters.mean, self.parameters.std, solution.shape)).astype(int)
@@ -74,6 +76,11 @@ class Mutation:
     def __mutate_random_bit(self, solution):
         # TODO: Uzupełnić
         pass
+
+    def __mutate_feasible_COV(self, solution):
+
+        pass
+
 
 
 class WrongParametersError(Exception):

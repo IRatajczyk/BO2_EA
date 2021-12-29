@@ -6,6 +6,7 @@ import FitnessFunction
 import Selection
 import Crossover
 import Mutation
+import HybridOptimizer
 import utils
 import os
 import TimeSeriesProcessing
@@ -39,11 +40,15 @@ if __name__ == "__main__":
     Mut_param = Mutation.MutationParameters(**params)
     Mut = Mutation.Mutation(Mut_param)
 
+    Hybrid_param = HybridOptimizer.HybridOptimizerParameters(**params)
+    H = HybridOptimizer.HybridOptimizer(Hybrid_param, Sol, FF)
+
     EA.set_solution(Sol)
     EA.set_fitness_function(FF)
     EA.set_selection(Sel)
     EA.set_mutation(Mut)
     EA.set_crossover(X)
+    EA.set_hybrid_optimizer(H)
 
     print(EA.proceed())
     print(EA.get_time())

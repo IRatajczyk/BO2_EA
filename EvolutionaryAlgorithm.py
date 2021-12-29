@@ -3,6 +3,7 @@ import FitnessFunction
 import Solution
 import Mutation
 import Selection
+import HybridOptimizer
 import numpy as np
 
 
@@ -10,7 +11,7 @@ class EvolutionaryAlgorithmParameters:
     def __init__(self, allow_eps_ff_stop: bool = False, eps_ff: float = 1e-6, eps_ff_type: str = "Average",
                  allow_no_iter_stop: bool = True, no_iter: int = 1e6,
                  allow_indifferent_population_stop: bool = False, population_diversity_measure: str = "Std of FF",
-                 pop_div_eps: float = 1e-2, population_number: int = 50, **kwargs):
+                 pop_div_eps: float = 1e-2, population_number: int = 50, hybrid: bool = True, **kwargs):
         self.allow_eps_ff_stop = allow_eps_ff_stop
         self.eps_ff = eps_ff
         self.eps_ff_type = eps_ff_type
@@ -23,6 +24,8 @@ class EvolutionaryAlgorithmParameters:
         self.pop_div_eps = pop_div_eps
 
         self.population_number = population_number
+
+        self.hybrid_optimizer = hybrid
 
         self.check()
 
@@ -59,6 +62,9 @@ class EvolutionaryAlgorithm:
         self.selection = None
         self.selection_parameters = None
 
+        self.hybrid_optimizer = None
+        self.hybrid_optimizer_parameters = None
+
     def set_solution(self, solution: Solution) -> None:
         self.solution = solution
         self.solution_parameters = solution.parameters
@@ -79,13 +85,17 @@ class EvolutionaryAlgorithm:
         self.selection = selection
         self.selection_parameters = selection.parameters
 
+    def set_hybrid_optimizer(self, hybrid_optimizer: HybridOptimizer) -> None:
+        self.hybrid_optimizer = hybrid_optimizer
+        self.hybrid_optimizer_parameters = hybrid_optimizer.parameters
+
     def get_time(self):
         return self.time
 
     def get_best_fitness_history(self):
         return self.best_fitness_history
 
-    def proceed(self):  # ???
+    def proceed(self):
         self.generate_population()
         self.proceed_fitness()
         self.elite = self.selection.select_elite(self.population)
@@ -102,6 +112,7 @@ class EvolutionaryAlgorithm:
             for i, solution in enumerate(self.population):
                 if np.random.rand() <= self.mutation_parameters.mutation_probability:
                     self.population[i][0] = self.mutation.mutate(solution[0])
+                    self.population[i][0] = self.solution.cast_feasible(self.population[i][0])
 
             self.proceed_fitness()
             self.population = self.selection.select(self.population + self.elite, fixed_len=self.algorithm_parameters.population_number)
@@ -113,8 +124,11 @@ class EvolutionaryAlgorithm:
             self.best_fitness_history.append(best_fitness)
             self.average_fitness_history.append(average_fitness)
 
-        best_solution = sorted(self.population + self.elite, key=lambda genome: genome[1], reverse=True)[0]
-        return best_solution[0]
+        best_solution = sorted(self.population + self.elite, key=lambda genome: genome[1], reverse=False)[0]
+        print(best_solution[1])
+        if self.algorithm_parameters.hybrid_optimizer:
+            best_solution = self.hybrid_optimizer.optimize(best_solution[0])
+        return self.solution.get_solution(best_solution[0]), self.solution.check_feasibility(best_solution[0]), np.sum(best_solution[1])
 
     def generate_population(self) -> None:
         if self.population is None:

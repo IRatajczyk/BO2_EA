@@ -13,8 +13,8 @@
   "create_feasible": true,
   "solution_size": 365,
   "L_limit": 0,
-  "DL_limit": 50,
-  "L0": 40,
+  "DL_limit": 500,
+  "L0": 400,
 
   "name_of_fitness_function": "TimeSeriesCovidProblemNaive",
   "worker_cost": 1,
@@ -39,11 +39,11 @@
   "proportion": 0.25,
 
   "type_of_crossover": "Convex Combination",
-  "crossover_probability": 0.5,
+  "crossover_probability": 0.3,
   "distribution_of_cut": "Uniform",
   "alpha_distribution": "Uniform",
 
-  "type_of_mutation": "Cauchy",
+  "type_of_mutation": "Gaussian",
   "mutation_probability": 0.8,
   "mu": 0,
   "gamma": 10,
