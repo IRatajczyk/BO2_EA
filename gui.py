@@ -1,5 +1,9 @@
 import tkinter as tk
-
+import matplotlib
+matplotlib.use('TkAgg')
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
+from matplotlib.figure import Figure
+import numpy as np
 
 class GUI:
     def __init__(self):
@@ -13,6 +17,11 @@ class GUI:
 
         self.params_label = tk.Label(self.frame1, text="PARAMS").grid(row=0, column=0, padx=10, pady=10)
         self.plot_label = tk.Label(self.frame2, text="PLOT").grid(row=0, column=0, padx=10, pady=10)
+
+        self.figure = Figure(figsize=(10, 6), dpi=100)
+        self.subplot = self.figure.add_subplot(111)
+        self.canvas = FigureCanvasTkAgg(self.figure, self.frame2)
+        self.canvas.get_tk_widget().grid()
 
         # BUTTONS
         self.params_to_plot_button = tk.Button(self.frame1, text="TO PLOT", command=self.params_to_plot).grid(row=0, column=3, padx=10, pady=10)
@@ -207,6 +216,10 @@ class GUI:
 
         self.root.mainloop()
 
+    def make_figure(self):
+        self.subplot.clear()
+        self.subplot.plot(np.arange(0, 365), np.random.randint(10, size=365))
+
     def params_to_plot(self):
         self.frame1.pack_forget()
         self.frame2.pack()
@@ -216,7 +229,14 @@ class GUI:
         self.frame1.pack()
 
     def start(self):
-        print("RESULT: ")
+        print("RESULT: ", self.std_input)
+
+        self.make_figure()
+        self.canvas.draw()
+
+
+
+
 
 
 a = GUI()
