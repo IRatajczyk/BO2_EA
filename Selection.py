@@ -58,8 +58,7 @@ class Selection:
         if fixed_len is None:
             fixed_len = len(population)
         pop_copy = np.array(population, dtype=object)
-        probs = -1 * np.array([genome[1] for genome in population])
-        probs = probs - probs.min()
+        probs = 1 / np.array([genome[1] for genome in population])
         probs = probs / probs.sum()
         indices = np.random.choice(probs.shape[0], size=fixed_len, p=probs)
         return list(pop_copy[indices, :])

@@ -11,7 +11,7 @@ class EvolutionaryAlgorithmParameters:
     def __init__(self, allow_eps_ff_stop: bool = False, eps_ff: float = 1e-6, eps_ff_type: str = "Average",
                  allow_no_iter_stop: bool = True, no_iter: int = 1e6,
                  allow_indifferent_population_stop: bool = False, population_diversity_measure: str = "Std of FF",
-                 pop_div_eps: float = 1e-2, population_number: int = 50, hybrid: bool = True, **kwargs):
+                 pop_div_eps: float = 1e-2, population_number: int = 50, hybrid: bool = False, **kwargs):
         self.allow_eps_ff_stop = allow_eps_ff_stop
         self.eps_ff = eps_ff
         self.eps_ff_type = eps_ff_type
@@ -106,8 +106,10 @@ class EvolutionaryAlgorithm:
             for i in range(0, self.algorithm_parameters.population_number, 2):
                 if np.random.rand() <= self.crossover_parameters.crossover_probability:
                     crossover_result = self.crossover.cross(self.population[i][0], self.population[i + 1][0])
-                    self.population.append([crossover_result[0], 0])
-                    self.population.append([crossover_result[1], 0])
+                    x0 = self.solution.cast_feasible(crossover_result[0])
+                    x1 = self.solution.cast_feasible(crossover_result[1])
+                    self.population.append([x0, 0])
+                    self.population.append([x1, 0])
 
             for i, solution in enumerate(self.population):
                 if np.random.rand() <= self.mutation_parameters.mutation_probability:
@@ -125,10 +127,9 @@ class EvolutionaryAlgorithm:
             self.average_fitness_history.append(average_fitness)
 
         best_solution, best_fitness = sorted(self.population + self.elite, key=lambda genome: genome[1], reverse=False)[0]
-        print(best_fitness, self.solution.check_feasibility(best_solution))
         if self.algorithm_parameters.hybrid_optimizer:
             best_solution, best_fitness = self.hybrid_optimizer.optimize(best_solution)
-        return self.solution.get_solution(best_solution), self.solution.check_feasibility(best_solution), np.sum(best_fitness)
+        return self.solution.get_solution(best_solution)
 
     def generate_population(self) -> None:
         if self.population is None:

@@ -44,11 +44,11 @@ class Solution:
             return self.__check_feasible_TSOCOV19D(solution)
 
     def cast_feasible(self, solution):
-        limit = self.parameters.L_limit - self.parameters.L0
-        for i in range(self.parameters.solution_size):
+        solution[0] = solution[0] if solution[0] <= self.parameters.DL_limit else self.parameters.DL_limit
+        solution[0] = -self.parameters.L0 if self.parameters.L0 + solution[0] < self.parameters.L_limit else solution[0]
+        for i in range(1, self.parameters.solution_size):
             solution[i] = solution[i] if solution[i] <= self.parameters.DL_limit else self.parameters.DL_limit
-            solution[i] = solution[i] if solution[i] >= limit - np.cumsum(solution)[i-1] else limit - np.cumsum(solution)[i-1]
-            limit += solution[i]
+            solution[i] = -(np.cumsum(solution)[i-1] + self.parameters.L0) if np.cumsum(solution)[i-1] + self.parameters.L0 + solution[i] < self.parameters.L_limit else solution[i]
         return solution
 
     def get_solution(self, solution):
