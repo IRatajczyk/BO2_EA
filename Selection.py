@@ -79,7 +79,8 @@ class Selection:
         return selection
 
     def __select_elite(self, population):
-        sorted_by_fitness = sorted(population, key=lambda genome: genome[1])
+        population_ = list(np.array(population, dtype=object).copy())
+        sorted_by_fitness = sorted(population_, key=lambda genome: genome[1])
         return sorted_by_fitness[:self.parameters.elite_count]
 
     def __select_truncation(self, population):

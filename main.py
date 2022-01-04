@@ -1,5 +1,3 @@
-from timeit import timeit
-
 import numpy as np
 from matplotlib import pyplot as plt
 import EvolutionaryAlgorithm
@@ -12,7 +10,6 @@ import HybridOptimizer
 import utils
 import os
 import TimeSeriesProcessing
-import time
 
 """
 It is worth noticing that solutions are kept in a list of lists L such that L = [solution (np.array(); size = 365) ,fitness (float)]
