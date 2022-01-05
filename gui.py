@@ -1,10 +1,12 @@
 import tkinter as tk
-import matplotlib
-
-matplotlib.use('TkAgg')
+from main import *
+import TimeSeriesProcessing
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 from matplotlib.figure import Figure
 import numpy as np
+import matplotlib
+
+matplotlib.use('TkAgg')
 
 
 class GUI:
@@ -24,10 +26,6 @@ class GUI:
         self.figure = Figure(figsize=(10, 6), dpi=100)
         self.subplot = self.figure.add_subplot(211)
         self.subplot2 = self.figure.add_subplot(212)
-        self.subplot.set_ylim([0, 5])
-        self.subplot.set_xlim([0, 5])
-        self.subplot2.set_ylim([5, 10])
-        self.subplot2.set_xlim([2, 8])
 
         self.canvas = FigureCanvasTkAgg(self.figure, self.frame2)
         self.canvas.get_tk_widget().grid()
@@ -85,7 +83,7 @@ class GUI:
                                                                                                      sticky="W")
 
         self.no_iter_input = tk.DoubleVar(self.root)
-        self.no_iter_input.set(500)
+        self.no_iter_input.set(1e4)
         self.no_iter_label = tk.Label(self.frame1, text="no iter").grid(row=6, column=0, sticky="W")
         self.no_iter_entry = tk.Entry(self.frame1, textvariable=self.no_iter_input).grid(row=6, column=1, sticky="W")
 
@@ -133,10 +131,10 @@ class GUI:
                                                      variable=self.create_feasible_input).grid(row=3, column=4,
                                                                                                sticky="W")
 
-        self.solution_input = tk.DoubleVar(self.root)
-        self.solution_input.set(356)
+        self.solution_size_input = tk.DoubleVar(self.root)
+        self.solution_size_input.set(52)
         self.solution_size_label = tk.Label(self.frame1, text="solution size").grid(row=4, column=3, sticky="W")
-        self.solution_size_entry = tk.Entry(self.frame1, textvariable=self.solution_input).grid(row=4, column=4,
+        self.solution_size_entry = tk.Entry(self.frame1, textvariable=self.solution_size_input).grid(row=4, column=4,
                                                                                                 sticky="W")
 
         self.L_limit_input = tk.DoubleVar(self.root)
@@ -249,7 +247,7 @@ class GUI:
             row=18, column=1,
             sticky="W")
 
-        self.elite_count_input = tk.StringVar(self.root)
+        self.elite_count_input = tk.IntVar(self.root)
         self.elite_count_input.set(10)
         self.elite_count_label = tk.Label(self.frame1, text="elite_count").grid(row=19, column=0, sticky="W")
         self.elite_count_entry = tk.Entry(self.frame1, textvariable=self.elite_count_input).grid(row=19, column=1,
@@ -338,13 +336,14 @@ class GUI:
 
         self.root.mainloop()
 
-    def make_figure(self):
+    def make_figure(self, data, data2):
         self.subplot.clear()
-        self.subplot.set_ylim([0, 5])
-        self.subplot.set_xlim([0, 5])
-        self.subplot.scatter([float(self.std_input.get())], [float(self.mean_input.get())])
+        self.subplot2.clear()
+        # self.subplot.set_ylim([0, 5])
+        # self.subplot.set_xlim([0, 5])
+        self.subplot.plot(np.arange(0, 52), data)
 
-        self.subplot2.plot(np.arange(0, 365), np.random.randint(10, size=365))
+        self.subplot2.plot(np.arange(0, 3000), data2)
 
     def params_to_plot(self):
         self.frame1.pack_forget()
@@ -355,39 +354,40 @@ class GUI:
         self.frame1.pack()
 
     def start(self):
-        print("RESULT: ", self.std_input.get())
-        # self.result.set(str(np.random.rand(10)))
-        # self.result_label.update_idletasks()
-        self.make_figure()
+        par = self.load_from_json()
+        result = self.do_this_shit(par)
+        for i in result:
+            print(len(i))
+        self.make_figure(result[0], result[3])
         self.canvas.draw()
 
     def get_params(self):
         return {"allow_eps_ff_stop": bool(self.allow_eps_ff_stop_input.get()),
-                "eps_ff": float(self.eps_ff_input.get()),
+                "eps_ff": int(self.eps_ff_input.get()),
                 "eps_ff_type": str(self.eps_ff_type_input.get()),
                 "allow_no_iter_stop": bool(self.allow_no_iter_stop_input.get()),
-                "no_iter": float(self.no_iter_input.get()),
+                "no_iter": int(self.no_iter_input.get()),
                 "allow_indifferent_population_stop": bool(self.allow_indifferent_population_stop_input.get()),
                 "population_diversity_measure": str(self.population_diversity_measure_input.get()),
                 "pop_div_eps": float(self.pop_div_eps_input.get()),
-                "population_number": float(self.population_number_input.get()),
+                "population_number": int(self.population_number_input.get()),
 
                 "problem_name": str(self.problem_name_input.get()),
                 "create_feasible": bool(self.create_feasible_input.get()),
-                "solution_size": float(self.solution_input.get()),
-                "L_limit": float(self.L_limit_input.get()),
-                "DL_limit": float(self.DL_limit_size_input.get()),
-                "L0": float(self.L0_input.get()),
+                "solution_size": int(self.solution_size_input.get()),
+                "L_limit": int(self.L_limit_input.get()),
+                "DL_limit": int(self.DL_limit_size_input.get()),
+                "L0": int(self.L0_input.get()),
 
                 "name_of_fitness_function": str(self.name_of_fitness_function_input.get()),
                 "worker_cost": float(self.worker_cost_input.get()),
                 "death_probability": float(self.death_probability_input.get()),
                 "cost_of_death": float(self.cost_of_death_input.get()),
                 "training_cost": float(self.training_cost_input.get()),
-                "swabs_per_day": float(self.swabs_per_day_input.get()),
+                "swabs_per_day": int(self.swabs_per_day_input.get()),
                 "delay": float(self.delay_input.get()),
                 "cost_of_non_immediate_swab": float(self.cost_of_non_immediate_swab_input.get()),
-                "days_for_swab": float(self.days_for_swab_input.get()),
+                "days_for_swab": int(self.days_for_swab_input.get()),
                 "delayed_cost": bool(self.delay_input.get()),
                 "learning_type": str(self.learning_type_input.get()),
                 "learning_parameter": float(self.learning_parameter_input.get()),
@@ -395,8 +395,8 @@ class GUI:
                 "type_of_selection": str(self.type_of_selection_input.get()),
                 "elite": bool(self.elite_input.get()),
                 "truncation": bool(self.truncation_input.get()),
-                "elite_count": float(self.elite_count_input.get()),
-                "k": float(self.k_input.get()),
+                "elite_count": int(self.elite_count_input.get()),
+                "k": int(self.k_input.get()),
                 "p": float(self.p_input.get()),
                 "proportion": float(self.proportion_input.get()),
 
@@ -413,5 +413,49 @@ class GUI:
                 "std": float(self.std_input.get())
                 }
 
+    def load_from_json(self):
+        params = utils.load_config() if os.path.isfile("data/config.json") else dict()
+        return params
+
+    def do_this_shit(self, params: dict):
+        TS_param = TimeSeriesProcessing.TimeSeriesProcessingParameters(model_type="ARIMA")
+        TS = TimeSeriesProcessing.TimeSeries(TS_param)
+
+        params["time_series"] = TS.get_forecast()
+
+        EA_param = EvolutionaryAlgorithm.EvolutionaryAlgorithmParameters(**params)
+        EA = EvolutionaryAlgorithm.EvolutionaryAlgorithm(EA_param)
+
+        Sol_param = Solution.SolutionParameters(**params)
+        Sol = Solution.Solution(Sol_param)
+
+        FF_param = FitnessFunction.FitnessFunctionParameters(**params)
+        FF = FitnessFunction.FitnessFunction(FF_param, Sol)
+
+        Sel_param = Selection.SelectionParameters(**params)
+        Sel = Selection.Selection(Sel_param)
+
+        X_param = Crossover.CrossoverParameters(**params)
+        X = Crossover.Crossover(X_param)
+
+        Mut_param = Mutation.MutationParameters(**params)
+        Mut = Mutation.Mutation(Mut_param)
+
+        Hybrid_param = HybridOptimizer.HybridOptimizerParameters(**params)
+        H = HybridOptimizer.HybridOptimizer(Hybrid_param, Sol, FF)
+
+        EA.set_solution(Sol)
+        EA.set_fitness_function(FF)
+        EA.set_selection(Sel)
+        EA.set_mutation(Mut)
+        EA.set_crossover(X)
+        EA.set_hybrid_optimizer(H)
+
+        time_series_solution = EA.proceed()
+
+        return TS.get_forecast(), time_series_solution, EA.best_fitness_history, EA.average_fitness_history
+
 
 gui = GUI()
+
+print(gui.do_this_shit(gui.get_params()))
