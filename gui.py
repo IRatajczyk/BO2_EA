@@ -19,11 +19,11 @@ class GUI:
         self.frame2 = tk.Frame(self.root, width=1400, height=700)
         self.frame1.pack()
 
-        self.params_label = tk.Label(self.frame1, text="PARAMS").grid(row=0, column=0, padx=10, pady=10)
+        self.params_label = tk.Label(self.frame1, text="PARAMS").grid(row=0, column=4, padx=10, pady=10)
         self.plot_label = tk.Label(self.frame2, text="PLOT").grid(row=0, column=0, padx=10, pady=10)
 
         # OTHERS
-        self.figure = Figure(figsize=(10, 6), dpi=100)
+        self.figure = Figure(figsize=(12, 6), dpi=100)
         self.subplot = self.figure.add_subplot(211)
         self.subplot2 = self.figure.add_subplot(212)
 
@@ -32,16 +32,16 @@ class GUI:
 
         # BUTTONS
         self.params_to_plot_button = tk.Button(self.frame1, text="TO PLOT", command=self.params_to_plot).grid(row=0,
-                                                                                                              column=3,
+                                                                                                              column=8,
                                                                                                               padx=10,
                                                                                                               pady=10)
         self.plot_to_params_button = tk.Button(self.frame2, text="TO PARMAS", command=self.plot_to_params).grid(row=0,
-                                                                                                                column=3,
+                                                                                                                column=8,
                                                                                                                 padx=10,
                                                                                                                 pady=10)
-        self.start_button = tk.Button(self.frame1, text="START", command=self.start).grid(row=0, column=4, padx=10,
+        self.start_button = tk.Button(self.frame1, text="START", command=self.start).grid(row=0, column=9, padx=10,
                                                                                           pady=10)
-        self.start_button_2 = tk.Button(self.frame2, text="START", command=self.start).grid(row=0, column=4, padx=10,
+        self.start_button_2 = tk.Button(self.frame2, text="START", command=self.start).grid(row=0, column=9, padx=10,
                                                                                             pady=10)
 
         # PARAMS LABELS
@@ -83,7 +83,7 @@ class GUI:
                                                                                                      sticky="W")
 
         self.no_iter_input = tk.IntVar(self.root)
-        self.no_iter_input.set(1e3)
+        self.no_iter_input.set(1000)
         self.no_iter_label = tk.Label(self.frame1, text="no iter").grid(row=6, column=0, sticky="W")
         self.no_iter_entry = tk.Entry(self.frame1, textvariable=self.no_iter_input).grid(row=6, column=1, sticky="W")
 
