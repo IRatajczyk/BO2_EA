@@ -53,6 +53,7 @@ class Selection:
         if self.parameters.elite:
             res = self.__select_truncation(population) if self.parameters.truncation else self.__select_elite(population)
             return res
+        return []
 
     def __select_roulette(self, population, fixed_len):
         if fixed_len is None:

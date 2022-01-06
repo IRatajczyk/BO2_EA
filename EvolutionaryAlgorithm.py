@@ -11,7 +11,7 @@ class EvolutionaryAlgorithmParameters:
     def __init__(self, allow_eps_ff_stop: bool = False, eps_ff: float = 1e-6, eps_ff_type: str = "Average",
                  allow_no_iter_stop: bool = True, no_iter: int = 1e6,
                  allow_indifferent_population_stop: bool = False, population_diversity_measure: str = "Std of FF",
-                 pop_div_eps: float = 1e-2, population_number: int = 50, hybrid: bool = False, **kwargs):
+                 pop_div_eps: float = 1e-2, population_number: int = 50, hybrid: bool = True, **kwargs):
         self.allow_eps_ff_stop = allow_eps_ff_stop
         self.eps_ff = eps_ff
         self.eps_ff_type = eps_ff_type
@@ -115,6 +115,7 @@ class EvolutionaryAlgorithm:
                 if np.random.rand() <= self.mutation_parameters.mutation_probability:
                     self.population[i][0] = self.mutation.mutate(solution[0])
                     self.population[i][0] = self.solution.cast_feasible(self.population[i][0])
+
 
             self.proceed_fitness()
             self.population = self.selection.select(self.population + self.elite, fixed_len=self.algorithm_parameters.population_number)

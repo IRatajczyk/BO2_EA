@@ -52,18 +52,20 @@ class Solution:
         return solution
 
     def get_solution(self, solution):
-        return np.cumsum(solution)+self.parameters.L0
+        return np.cumsum(solution) + self.parameters.L0
 
     def __create_feasible_TSOCOV(self):
         solution = np.zeros(self.parameters.solution_size)
-        limit = self.parameters.L0
         for i in range(self.parameters.solution_size):
+            limit = self.parameters.L0 + np.cumsum(solution)[i] if i else self.parameters.L0
             solution[i] = self.rng.integers(self.parameters.L_limit - limit, self.parameters.DL_limit)
-            limit += solution[i]
         return solution
 
     def __create_non_feasible_TSOCOV(self):
-        return
+        solution = np.zeros(self.parameters.solution_size)
+        for i in range(self.parameters.solution_size):
+            solution[i] = self.rng.integers(-10000, 10000)
+        return solution
 
     def __check_feasible_TSOCOV19D(self, solution) -> bool:
         return np.all(np.cumsum(solution)+self.parameters.L0 >= self.parameters.L_limit) and np.all(solution <= self.parameters.DL_limit)
