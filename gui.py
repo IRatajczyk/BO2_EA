@@ -82,8 +82,8 @@ class GUI:
                                                         variable=self.allow_no_iter_stop_input).grid(row=5, column=1,
                                                                                                      sticky="W")
 
-        self.no_iter_input = tk.DoubleVar(self.root)
-        self.no_iter_input.set(1e4)
+        self.no_iter_input = tk.IntVar(self.root)
+        self.no_iter_input.set(1e3)
         self.no_iter_label = tk.Label(self.frame1, text="no iter").grid(row=6, column=0, sticky="W")
         self.no_iter_entry = tk.Entry(self.frame1, textvariable=self.no_iter_input).grid(row=6, column=1, sticky="W")
 
@@ -126,6 +126,7 @@ class GUI:
             row=2, column=4, sticky="W")
 
         self.create_feasible_input = tk.IntVar()
+        self.create_feasible_input.set(1)
         self.create_feasible_label = tk.Label(self.frame1, text="create feasible").grid(row=3, column=3, sticky="W")
         self.create_feasible_button = tk.Checkbutton(self.frame1, text="",
                                                      variable=self.create_feasible_input).grid(row=3, column=4,
@@ -135,21 +136,21 @@ class GUI:
         self.solution_size_input.set(52)
         self.solution_size_label = tk.Label(self.frame1, text="solution size").grid(row=4, column=3, sticky="W")
         self.solution_size_entry = tk.Entry(self.frame1, textvariable=self.solution_size_input).grid(row=4, column=4,
-                                                                                                sticky="W")
+                                                                                                     sticky="W")
 
         self.L_limit_input = tk.DoubleVar(self.root)
-        self.L_limit_input.set(0)
+        self.L_limit_input.set(3000)
         self.L_limit_label = tk.Label(self.frame1, text="L limit").grid(row=5, column=3, sticky="W")
         self.L_limit_entry = tk.Entry(self.frame1, textvariable=self.L_limit_input).grid(row=5, column=4, sticky="W")
 
         self.DL_limit_size_input = tk.DoubleVar(self.root)
-        self.DL_limit_size_input.set(50)
+        self.DL_limit_size_input.set(8000)
         self.DL_limit_size_label = tk.Label(self.frame1, text="DL limit").grid(row=6, column=3, sticky="W")
         self.DL_limit_size_entry = tk.Entry(self.frame1, textvariable=self.DL_limit_size_input).grid(row=6, column=4,
                                                                                                      sticky="W")
 
         self.L0_input = tk.DoubleVar(self.root)
-        self.L0_input.set(40)
+        self.L0_input.set(5000)
         self.L0_label = tk.Label(self.frame1, text="L0").grid(row=7, column=3, sticky="W")
         self.L0_entry = tk.Entry(self.frame1, textvariable=self.L0_input).grid(row=7, column=4, sticky="W")
 
@@ -169,32 +170,32 @@ class GUI:
         #                                                                                              sticky="W")
 
         self.worker_cost_input = tk.DoubleVar(self.root)
-        self.worker_cost_input.set(50)
+        self.worker_cost_input.set(5)
         self.worker_cost_label = tk.Label(self.frame1, text="worker cost").grid(row=4, column=6, sticky="W")
         self.worker_cost_entry = tk.Entry(self.frame1, textvariable=self.worker_cost_input).grid(row=4, column=7,
                                                                                                  sticky="W")
 
         self.cost_of_death_input = tk.DoubleVar(self.root)
-        self.cost_of_death_input.set(0)
+        self.cost_of_death_input.set(100)
         self.cost_of_death_label = tk.Label(self.frame1, text="cost_of_death").grid(row=5, column=6, sticky="W")
         self.cost_of_death_entry = tk.Entry(self.frame1, textvariable=self.cost_of_death_input).grid(row=5, column=7,
                                                                                                      sticky="W")
 
         self.death_probability_input = tk.DoubleVar(self.root)
-        self.death_probability_input.set(0.05)
+        self.death_probability_input.set(0.15)
         self.death_probability_label = tk.Label(self.frame1, text="death_probability").grid(row=6, column=6, sticky="W")
         self.death_probability_entry = tk.Entry(self.frame1, textvariable=self.death_probability_input).grid(row=6,
                                                                                                              column=7,
                                                                                                              sticky="W")
 
         self.training_cost_input = tk.DoubleVar(self.root)
-        self.training_cost_input.set(200)
+        self.training_cost_input.set(4)
         self.training_cost_label = tk.Label(self.frame1, text="training_cost").grid(row=7, column=6, sticky="W")
         self.training_cost_entry = tk.Entry(self.frame1, textvariable=self.training_cost_input).grid(row=7, column=7,
                                                                                                      sticky="W")
 
         self.swabs_per_day_input = tk.DoubleVar(self.root)
-        self.swabs_per_day_input.set(50)
+        self.swabs_per_day_input.set(1)
         self.swabs_per_day_label = tk.Label(self.frame1, text="swabs_per_day").grid(row=8, column=6, sticky="W")
         self.swabs_per_day_entry = tk.Entry(self.frame1, textvariable=self.swabs_per_day_input).grid(row=8, column=7,
                                                                                                      sticky="W")
@@ -205,7 +206,7 @@ class GUI:
         self.delay_entry = tk.Entry(self.frame1, textvariable=self.delay_input).grid(row=9, column=7, sticky="W")
 
         self.cost_of_non_immediate_swab_input = tk.DoubleVar(self.root)
-        self.cost_of_non_immediate_swab_input.set(100)
+        self.cost_of_non_immediate_swab_input.set(10)
         self.cost_of_non_immediate_swab_label = tk.Label(self.frame1, text="cost_of_non_immediate_swab").grid(row=10,
                                                                                                               column=6,
                                                                                                               sticky="W")
@@ -214,16 +215,22 @@ class GUI:
             row=10, column=7, sticky="W")
 
         self.days_for_swab_input = tk.DoubleVar(self.root)
-        self.days_for_swab_input.set(14)
+        self.days_for_swab_input.set(2)
         self.days_for_swab_label = tk.Label(self.frame1, text="days_for_swab").grid(row=11, column=6, sticky="W")
         self.days_for_swab_entry = tk.Entry(self.frame1, textvariable=self.days_for_swab_input).grid(row=11, column=7,
                                                                                                      sticky="W")
+        self.delayed_cost_input = tk.IntVar()
+        self.delayed_cost_input.set(1)
+        self.delayed_cost_label = tk.Label(self.frame1, text="delayed cost").grid(row=12, column=6, sticky="W")
+        self.delayed_cost_button = tk.Checkbutton(self.frame1, text="", variable=self.delayed_cost_input).grid(row=12,
+                                                                                                               column=7,
+                                                                                                               sticky="W")
 
         self.learning_parameter_input = tk.DoubleVar(self.root)
         self.learning_parameter_input.set(0.2)
-        self.learning_parameter_label = tk.Label(self.frame1, text="learning_parameter").grid(row=12, column=6,
+        self.learning_parameter_label = tk.Label(self.frame1, text="learning_parameter").grid(row=13, column=6,
                                                                                               sticky="W")
-        self.learning_parameter_entry = tk.Entry(self.frame1, textvariable=self.learning_parameter_input).grid(row=12,
+        self.learning_parameter_entry = tk.Entry(self.frame1, textvariable=self.learning_parameter_input).grid(row=13,
                                                                                                                column=7,
                                                                                                                sticky="W")
 
@@ -248,7 +255,7 @@ class GUI:
             sticky="W")
 
         self.elite_count_input = tk.IntVar(self.root)
-        self.elite_count_input.set(10)
+        self.elite_count_input.set(5)
         self.elite_count_label = tk.Label(self.frame1, text="elite_count").grid(row=19, column=0, sticky="W")
         self.elite_count_entry = tk.Entry(self.frame1, textvariable=self.elite_count_input).grid(row=19, column=1,
                                                                                                  sticky="W")
@@ -271,7 +278,7 @@ class GUI:
 
         # X
         self.type_of_crossover_input = tk.StringVar(self.root)
-        self.type_of_crossover_input.set('One Point')
+        self.type_of_crossover_input.set('Convex Combination')
         self.type_of_crossover_label = tk.Label(self.frame1, text="type_of_crossover").grid(row=16, column=3,
                                                                                             sticky="W")
         self.type_of_crossover_entry = tk.OptionMenu(self.frame1, self.type_of_crossover_input, 'One Point',
@@ -308,7 +315,7 @@ class GUI:
                                                     'Gaussian').grid(row=16, column=7, sticky="W")
 
         self.mutation_probability_input = tk.DoubleVar(self.root)
-        self.mutation_probability_input.set(0.3)
+        self.mutation_probability_input.set(0.7)
         self.mutation_probability_label = tk.Label(self.frame1, text="mutation_probability").grid(row=17, column=6,
                                                                                                   sticky="W")
         self.mutation_probability_entry = tk.Entry(self.frame1, textvariable=self.mutation_probability_input).grid(
@@ -320,7 +327,7 @@ class GUI:
         self.mu_entry = tk.Entry(self.frame1, textvariable=self.mu_input).grid(row=18, column=7, sticky="W")
 
         self.gamma_input = tk.DoubleVar(self.root)
-        self.gamma_input.set(10)
+        self.gamma_input.set(2000)
         self.gamma_label = tk.Label(self.frame1, text="gamma").grid(row=19, column=6, sticky="W")
         self.gamma_entry = tk.Entry(self.frame1, textvariable=self.gamma_input).grid(row=19, column=7, sticky="W")
 
@@ -336,14 +343,14 @@ class GUI:
 
         self.root.mainloop()
 
-    def make_figure(self, data, data2):
+    def make_figure(self, data, data2, data3):
         self.subplot.clear()
         self.subplot2.clear()
-        # self.subplot.set_ylim([0, 5])
-        # self.subplot.set_xlim([0, 5])
+
         self.subplot.plot(np.arange(0, 52), data)
 
-        self.subplot2.plot(np.arange(0, 3000), data2)
+        self.subplot2.plot(np.arange(0, len(data2)), data2)
+        self.subplot2.plot(np.arange(0, len(data3)), data3)
 
     def params_to_plot(self):
         self.frame1.pack_forget()
@@ -354,11 +361,9 @@ class GUI:
         self.frame1.pack()
 
     def start(self):
-        par = self.load_from_json()
+        par = self.get_params()
         result = self.do_this_shit(par)
-        for i in result:
-            print(len(i))
-        self.make_figure(result[0], result[3])
+        self.make_figure(result[0], result[2], result[3])
         self.canvas.draw()
 
     def get_params(self):
@@ -388,7 +393,7 @@ class GUI:
                 "delay": float(self.delay_input.get()),
                 "cost_of_non_immediate_swab": float(self.cost_of_non_immediate_swab_input.get()),
                 "days_for_swab": int(self.days_for_swab_input.get()),
-                "delayed_cost": bool(self.delay_input.get()),
+                "delayed_cost": bool(self.delayed_cost_input),
                 "learning_type": str(self.learning_type_input.get()),
                 "learning_parameter": float(self.learning_parameter_input.get()),
 
@@ -457,5 +462,3 @@ class GUI:
 
 
 gui = GUI()
-
-print(gui.do_this_shit(gui.get_params()))
