@@ -84,7 +84,7 @@ class Crossover:
             raise ValueError(f"Solution shapes {solution1.shape} and {solution2.shape} don't match!")
         if self.parameters.alpha_distribution == "Uniform":
             alpha = np.random.rand()
-        if self.parameters.alpha_distribution == "Arcsine":
+        elif self.parameters.alpha_distribution == "Arcsine":
             alpha = arcsine.rvs()
         x = (alpha * solution1 + (1 - alpha) * solution2).astype(int)
         y = ((1 - alpha) * solution1 + alpha * solution2).astype(int)

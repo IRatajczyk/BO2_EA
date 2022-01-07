@@ -10,7 +10,7 @@ class FitnessFunctionParameters:
     def __init__(self, name_of_fitness_function: str = "TimeSeriesCovidProblemNaive", worker_cost: float = 0,
                  death_probability: float = 0, cost_of_death: float = 0, training_cost: float = 0,
                  swabs_per_day: int = 0,
-                 delay=0, cost_of_non_immediate_swab: float = 0, days_for_swab: int = 14, delayed_cost: bool = True,
+                 cost_of_non_immediate_swab: float = 0, days_for_swab: int = 14, delayed_cost: bool = True,
                  time_series=None, learning_type: str = None, learning_parameter: float = 0, **kwargs):
         """
         Class initializer for coherent parameter definition for Fitness Function.
@@ -31,7 +31,6 @@ class FitnessFunctionParameters:
         self.death_probability = death_probability
         self.training_cost = training_cost
         self.swabs_per_day = swabs_per_day
-        self.delay = delay
         self.time_series = time_series
         self.cost_of_non_immediate_swab = death_probability * cost_of_death / 2 if delayed_cost else cost_of_non_immediate_swab
         self.days_for_swab = days_for_swab
@@ -58,7 +57,7 @@ class FitnessFunction:
             return self.__calculate_cov19_naive_ff(solution)
 
     def __calculate_cov19_ff(self, solution) -> float:
-        L = self.solution.get_solution(solution)[0]
+        L = self.solution.get_solution(solution)
         chi = self.parameters.time_series
         X = self.parameters.worker_cost
         Y = self.parameters.cost_of_non_immediate_swab
@@ -87,7 +86,7 @@ class FitnessFunction:
         return J
 
     def __calculate_cov19_naive_ff(self, solution) -> float:
-        L = self.solution.get_solution(solution)[0]
+        L = self.solution.get_solution(solution)
         chi = self.parameters.time_series
         X = self.parameters.worker_cost
         Y = self.parameters.death_probability * self.parameters.cost_of_death

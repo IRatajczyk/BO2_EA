@@ -26,7 +26,7 @@ class SelectionParameters:
     def check(self):
         if self.type_of_selection not in ("Roulette", "Tournament", "Boltzmann"):
             raise NotImplementedError(f"Selection not implemented for {self.type_of_selection} type!")
-        if not isinstance(self.elite_count, int) or self.elite_count < 1:
+        if not isinstance(self.elite_count, int) or self.elite_count < 0:
             raise WrongParametersError(f"Parameter elite count must be a positive integer!")
         if not isinstance(self.k, int) or self.k < 1:
             raise WrongParametersError(f"Parameter k (the tournament size) must be a positive integer!")

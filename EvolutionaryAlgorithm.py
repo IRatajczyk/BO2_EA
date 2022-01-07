@@ -8,13 +8,18 @@ import numpy as np
 
 
 class EvolutionaryAlgorithmParameters:
-    def __init__(self, allow_eps_ff_stop: bool = False, eps_ff: float = 1e-6, eps_ff_type: str = "Average",
+    def __init__(self,
+                 allow_eps_ff_stop: bool = False, eps_ff: float = 1e-6, eps_ff_type: str = "Best", no_back: int = 50,
                  allow_no_iter_stop: bool = True, no_iter: int = 1e6,
                  allow_indifferent_population_stop: bool = False, population_diversity_measure: str = "Std of FF",
-                 pop_div_eps: float = 1e-2, population_number: int = 50, hybrid: bool = True, **kwargs):
+                 pop_div_eps: float = 1e-2,
+                 population_number: int = 50,
+                 hybrid: bool = True, **kwargs):
+
         self.allow_eps_ff_stop = allow_eps_ff_stop
         self.eps_ff = eps_ff
         self.eps_ff_type = eps_ff_type
+        self.no_back = no_back
 
         self.allow_no_iter_stop = allow_no_iter_stop
         self.no_iter = no_iter
@@ -33,6 +38,8 @@ class EvolutionaryAlgorithmParameters:
         if (not self.allow_eps_ff_stop) and (not self.allow_no_iter_stop) and (
                 not self.allow_indifferent_population_stop):
             raise NoStopCondition("Algorithm has no stop condition, it is recommended to activate one")
+        if self.no_back < 1:
+            raise WrongParametersError("Number of iter for ff change should be an integer greater than 0!")
 
 
 class EvolutionaryAlgorithm:
@@ -116,9 +123,9 @@ class EvolutionaryAlgorithm:
                     self.population[i][0] = self.mutation.mutate(solution[0])
                     self.population[i][0] = self.solution.cast_feasible(self.population[i][0])
 
-
             self.proceed_fitness()
-            self.population = self.selection.select(self.population + self.elite, fixed_len=self.algorithm_parameters.population_number)
+            self.population = self.selection.select(self.population + self.elite,
+                                                    fixed_len=self.algorithm_parameters.population_number)
             self.elite = self.selection.select_elite(self.population + self.elite)
 
             population_fitness = [genome[1] for genome in self.population]
@@ -127,7 +134,8 @@ class EvolutionaryAlgorithm:
             self.best_fitness_history.append(best_fitness)
             self.average_fitness_history.append(average_fitness)
 
-        best_solution, best_fitness = sorted(self.population + self.elite, key=lambda genome: genome[1], reverse=False)[0]
+        best_solution, best_fitness = sorted(self.population + self.elite, key=lambda genome: genome[1], reverse=False)[
+            0]
         if self.algorithm_parameters.hybrid_optimizer:
             best_solution, best_fitness = self.hybrid_optimizer.optimize(best_solution)
         return self.solution.get_solution(best_solution)
@@ -145,7 +153,7 @@ class EvolutionaryAlgorithm:
 
     def not_stop(self) -> bool:
         ff_eps_cond = (not self.algorithm_parameters.allow_eps_ff_stop) \
-                      or self.__fitness_function_std() > self.algorithm_parameters.eps_ff
+                      or self.fitness_function_std() > self.algorithm_parameters.eps_ff
         no_iter = (not self.algorithm_parameters.allow_no_iter_stop) \
                   or self.algorithm_parameters.no_iter > self.time
         indiff_popul = (not self.algorithm_parameters.allow_indifferent_population_stop) \
@@ -156,9 +164,18 @@ class EvolutionaryAlgorithm:
         if self.algorithm_parameters.population_diversity_measure == "Std of FF":
             return self.__population_std_of_ff()
 
-    def __fitness_function_std(self) -> float:
+    def fitness_function_std(self) -> float:
         if self.algorithm_parameters.eps_ff_type == "Average":
-            return 1
+            return self.__change_of_average_ff()
+        elif self.algorithm_parameters.eps_ff_type == "Best":
+            return self.__change_of_best_ff()
+
+    def __change_of_average_ff(self) -> float:
+        return abs(
+            self.average_fitness_history[-1] - self.average_fitness_history[-1 - self.algorithm_parameters.no_back])
+
+    def __change_of_best_ff(self) -> float:
+        return abs(self.best_fitness_history[-1] - self.best_fitness_history[-1 - self.algorithm_parameters.no_back])
 
     def __population_std_of_ff(self) -> float:
         population_ff = np.array(self.population, dtype=object)[:, 1]
@@ -166,6 +183,12 @@ class EvolutionaryAlgorithm:
 
 
 class NoStopCondition(Exception):
+    def __init__(self, message):
+        self.message = message
+        super().__init__(self.message)
+
+
+class WrongParametersError(Exception):
     def __init__(self, message):
         self.message = message
         super().__init__(self.message)

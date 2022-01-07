@@ -20,6 +20,7 @@ class TimeSeries:
         return self.original_data.values
 
     def __read_original_data(self):
+        # to be done
         pass
 
     def __read_forecast(self):

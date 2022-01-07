@@ -1,7 +1,8 @@
 {
   "allow_eps_ff_stop": false,
   "eps_ff": 1e-3,
-  "eps_ff_type": "Average",
+  "eps_ff_type": "Best",
+  "no_back": 50,
   "allow_no_iter_stop": true,
   "no_iter": 3e3,
   "allow_indifferent_population_stop": false,
@@ -22,7 +23,6 @@
   "cost_of_death": 100,
   "training_cost": 4,
   "swabs_per_day": 1,
-  "delay": 1,
   "cost_of_non_immediate_swab": 10,
   "days_for_swab": 2,
   "delayed_cost": true,
