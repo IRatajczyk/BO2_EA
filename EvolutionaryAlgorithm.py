@@ -171,11 +171,17 @@ class EvolutionaryAlgorithm:
             return self.__change_of_best_ff()
 
     def __change_of_average_ff(self) -> float:
-        return abs(
+        try:
+            return abs(
             self.average_fitness_history[-1] - self.average_fitness_history[-1 - self.algorithm_parameters.no_back])
+        except Exception:
+            return np.inf
 
     def __change_of_best_ff(self) -> float:
-        return abs(self.best_fitness_history[-1] - self.best_fitness_history[-1 - self.algorithm_parameters.no_back])
+        try:
+            return abs(self.best_fitness_history[-1] - self.best_fitness_history[-1 - self.algorithm_parameters.no_back])
+        except Exception:
+            return np.inf
 
     def __population_std_of_ff(self) -> float:
         population_ff = np.array(self.population, dtype=object)[:, 1]
