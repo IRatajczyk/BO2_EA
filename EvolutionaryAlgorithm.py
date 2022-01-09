@@ -146,7 +146,7 @@ class EvolutionaryAlgorithm:
             0]
         if self.algorithm_parameters.hybrid_optimizer:
             best_solution, best_fitness = self.hybrid_optimizer.optimize(best_solution)
-        return self.solution.get_solution(best_solution), self.solution.check_feasibility(best_solution)
+        return self.solution.get_solution(best_solution), self.solution.check_feasibility(best_solution), best_fitness
 
     def generate_population(self) -> None:
         if self.population is None:
