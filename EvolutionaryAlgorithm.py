@@ -102,6 +102,14 @@ class EvolutionaryAlgorithm:
     def get_best_fitness_history(self):
         return self.best_fitness_history
 
+    def clear(self):
+        self.time = 0
+        self.population = []
+        self.elite = []
+        self.best_fitness_history = []
+        self.average_fitness_history = []
+
+
     def proceed(self):
         self.generate_population()
         self.proceed_fitness()
@@ -138,7 +146,7 @@ class EvolutionaryAlgorithm:
             0]
         if self.algorithm_parameters.hybrid_optimizer:
             best_solution, best_fitness = self.hybrid_optimizer.optimize(best_solution)
-        return self.solution.get_solution(best_solution)
+        return self.solution.get_solution(best_solution), self.solution.check_feasibility(best_solution)
 
     def generate_population(self) -> None:
         if self.population is None:

@@ -31,7 +31,7 @@ class HybridOptimizer:
         DL = self.solution_parameters.DL_limit
         for idx in range(1, self.solution_parameters.solution_size):
             cumulative_sum = np.cumsum(solution)[idx-1] + self.solution_parameters.L0
-            for d in range(-cumulative_sum, DL):
+            for d in range(int(-cumulative_sum), DL):
                 old_sol = solution.copy()
                 solution[idx] = d
                 new_sol = solution if self.solution.check_feasibility(solution) else old_sol

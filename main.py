@@ -14,8 +14,42 @@ import os
 import TimeSeriesProcessing
 
 """
+Cogito cogito ergo cogito sum.
+"""
+def proceed_test(EA: EvolutionaryAlgorithm, TS, repeat = 10):
+    solutions = []
+    feasibility = []
+    best_history = []
+    average_history = []
+    for x in range(repeat):
+        print(x)
+        sol, feasible = EA.proceed()
+        solutions.append(sol)
+        feasibility.append(feasible)
+        best_history.append(EA.best_fitness_history)
+        average_history.append(EA.average_fitness_history)
+        plt.figure()
+        plt.plot(range(EA.solution_parameters.solution_size), TS.get_forecast(), label='prediction')
+        plt.plot(range(EA.solution_parameters.solution_size), sol, label='found solution')
+        plt.grid()
+        plt.legend()
+        plt.title("Time series"+str(x))
+        plt.show()
+        EA.clear()
+    print(feasibility)
+    plt.plot(range(EA.get_time()), np.average(best_history, axis = 0), label='best')
+    plt.plot(range(EA.get_time()), np.averag(average_history, axis = 0), label='average')
+    plt.grid()
+    plt.legend()
+    plt.title("Fitness history")
+    plt.show()
+
+
+
+"""
 It is worth noticing that solutions are kept in a list of lists L such that L = [solution (np.array(); size = 365) ,fitness (float)]
 """
+
 
 if __name__ == "__main__":
     TS_param = TimeSeriesProcessing.TimeSeriesProcessingParameters(model_type="ARIMA")
@@ -52,19 +86,21 @@ if __name__ == "__main__":
     EA.set_crossover(X)
     EA.set_hybrid_optimizer(H)
 
-    sol__ = EA.proceed()
-    print(sol__)
-    plt.plot(range(EA.get_time()), EA.best_fitness_history, label='best')
-    plt.plot(range(EA.get_time()), EA.average_fitness_history, label='average')
-    plt.grid()
-    plt.legend()
-    plt.title("Fitness history")
-    plt.show()
-    plt.figure()
-    plt.plot(range(EA.solution_parameters.solution_size), TS.get_forecast(), label='prediction')
-    plt.plot(range(EA.solution_parameters.solution_size), sol__, label='found solution')
-    plt.grid()
-    plt.legend()
-    plt.title("Time series")
-    plt.show()
+    proceed_test(EA,TS,10)
+    print("DONE")
+    # sol__ = EA.proceed()
+    # print(sol__)
+    # plt.plot(range(EA.get_time()), EA.best_fitness_history, label='best')
+    # plt.plot(range(EA.get_time()), EA.average_fitness_history, label='average')
+    # plt.grid()
+    # plt.legend()
+    # plt.title("Fitness history")
+    # plt.show()
+    # plt.figure()
+    # plt.plot(range(EA.solution_parameters.solution_size), TS.get_forecast(), label='prediction')
+    # plt.plot(range(EA.solution_parameters.solution_size), sol__, label='found solution')
+    # plt.grid()
+    # plt.legend()
+    # plt.title("Time series")
+    # plt.show()
     # print(EA.average_fitness_history)
