@@ -441,7 +441,7 @@ class GUI:
                 "distribution_of_cut": str(self.distribution_of_cut_input.get()),
                 "alpha_distribution": str(self.alpha_distribution_input.get()),
 
-                "type_of_mutation": "Gaussian",
+                "type_of_mutation": str(self.type_of_mutation_input.get()),
                 "mutation_probability": float(self.mutation_probability_input.get()),
                 "mu": float(self.mu_input.get()),
                 "gamma": float(self.gamma_input.get()),
