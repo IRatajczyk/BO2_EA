@@ -109,7 +109,6 @@ class EvolutionaryAlgorithm:
         self.best_fitness_history = []
         self.average_fitness_history = []
 
-
     def proceed(self):
         self.generate_population()
         self.proceed_fitness()
@@ -181,13 +180,14 @@ class EvolutionaryAlgorithm:
     def __change_of_average_ff(self) -> float:
         try:
             return abs(
-            self.average_fitness_history[-1] - self.average_fitness_history[-1 - self.algorithm_parameters.no_back])
+                self.average_fitness_history[-1] - self.average_fitness_history[-1 - self.algorithm_parameters.no_back])
         except Exception:
             return np.inf
 
     def __change_of_best_ff(self) -> float:
         try:
-            return abs(self.best_fitness_history[-1] - self.best_fitness_history[-1 - self.algorithm_parameters.no_back])
+            return abs(
+                self.best_fitness_history[-1] - self.best_fitness_history[-1 - self.algorithm_parameters.no_back])
         except Exception:
             return np.inf
 
