@@ -19,8 +19,8 @@ class GUI:
         self.frame2 = tk.Frame(self.root, width=1400, height=700)
         self.frame1.pack()
 
-        self.params_label = tk.Label(self.frame1, text="PARAMS").grid(row=0, column=4, padx=10, pady=10)
-        self.plot_label = tk.Label(self.frame2, text="PLOT").grid(row=0, column=0, padx=10, pady=10)
+        self.params_label = tk.Label(self.frame1, text="PARAMS", font='Helvetica 20 bold').grid(row=0, column=4, padx=10, pady=10)
+        self.plot_label = tk.Label(self.frame2, text="PLOT", font='Helvetica 20 bold').grid(row=0, column=0, padx=10, pady=10)
 
         # OTHERS
         self.figure = Figure(figsize=(23, 12), dpi=50)
@@ -51,12 +51,12 @@ class GUI:
                                                                                             pady=10)
 
         # PARAMS LABELS
-        self.ea_param_label = tk.Label(self.frame1, text="EA params").grid(row=1, column=0, sticky="W", pady=10)
-        self.sol_param_label = tk.Label(self.frame1, text="Sol params").grid(row=1, column=3, sticky="W")
-        self.ff_param_label = tk.Label(self.frame1, text="FF params").grid(row=1, column=6, sticky="W")
-        self.sel_param_label = tk.Label(self.frame1, text="Sel params").grid(row=15, column=0, sticky="W")
-        self.x_param_label = tk.Label(self.frame1, text="X params").grid(row=15, column=3, sticky="W")
-        self.mut_param_label = tk.Label(self.frame1, text="Mut params").grid(row=15, column=6, sticky="W", pady=10)
+        self.ea_param_label = tk.Label(self.frame1, text="EA params", font='Helvetica 15 bold').grid(row=1, column=0, sticky="W", pady=10)
+        self.sol_param_label = tk.Label(self.frame1, text="Sol params", font='Helvetica 15 bold').grid(row=1, column=3, sticky="W")
+        self.ff_param_label = tk.Label(self.frame1, text="FF params", font='Helvetica 15 bold').grid(row=1, column=6, sticky="W")
+        self.sel_param_label = tk.Label(self.frame1, text="Sel params", font='Helvetica 15 bold').grid(row=15, column=0, sticky="W")
+        self.x_param_label = tk.Label(self.frame1, text="X params", font='Helvetica 15 bold').grid(row=15, column=3, sticky="W")
+        self.mut_param_label = tk.Label(self.frame1, text="Mut params", font='Helvetica 15 bold').grid(row=15, column=6, sticky="W", pady=10)
 
         # EMPTY
         self.empty_1_label = tk.Label(self.frame1, text="").grid(row=0, column=2, sticky="W", pady=20, padx=50)
@@ -74,64 +74,70 @@ class GUI:
         self.eps_ff_label = tk.Label(self.frame1, text="eps ff").grid(row=3, column=0, sticky="W")
         self.eps_ff_entry = tk.Entry(self.frame1, textvariable=self.eps_ff_input).grid(row=3, column=1, sticky="W")
 
+        self.no_back_input = tk.DoubleVar(self.root)
+        self.no_back_input.set(50)
+        self.no_back_label = tk.Label(self.frame1, text="no back").grid(row=4, column=0, sticky="W")
+        self.no_back_entry = tk.Entry(self.frame1, textvariable=self.no_back_input).grid(row=4, column=1, sticky="W")
+
         self.eps_ff_type_input = tk.StringVar(self.root)
         self.eps_ff_type_input.set('Best')
-        self.eps_ff_type_label = tk.Label(self.frame1, text="eps ff type").grid(row=4, column=0, sticky="W")
-        self.eps_ff_type_entry = tk.OptionMenu(self.frame1, self.eps_ff_type_input, 'Average', 'Best').grid(row=4,
+        self.eps_ff_type_label = tk.Label(self.frame1, text="eps ff type").grid(row=5, column=0, sticky="W")
+        self.eps_ff_type_entry = tk.OptionMenu(self.frame1, self.eps_ff_type_input, 'Average', 'Best').grid(row=5,
                                                                                                             column=1,
                                                                                                             sticky="W")
 
         self.allow_no_iter_stop_input = tk.IntVar()
         self.allow_no_iter_stop_input.set(1)
-        self.allow_no_iter_stop_label = tk.Label(self.frame1, text="allow no iter stop").grid(row=5, column=0,
+        self.allow_no_iter_stop_label = tk.Label(self.frame1, text="allow no iter stop").grid(row=6, column=0,
                                                                                               sticky="W")
         self.allow_no_iter_stop_button = tk.Checkbutton(self.frame1, text="",
-                                                        variable=self.allow_no_iter_stop_input).grid(row=5, column=1,
+                                                        variable=self.allow_no_iter_stop_input).grid(row=6, column=1,
                                                                                                      sticky="W")
 
         self.no_iter_input = tk.IntVar(self.root)
-        self.no_iter_input.set(1000)
-        self.no_iter_label = tk.Label(self.frame1, text="no iter").grid(row=6, column=0, sticky="W")
-        self.no_iter_entry = tk.Entry(self.frame1, textvariable=self.no_iter_input).grid(row=6, column=1, sticky="W")
+        self.no_iter_input.set(200)
+        self.no_iter_label = tk.Label(self.frame1, text="no iter").grid(row=7, column=0, sticky="W")
+        self.no_iter_entry = tk.Entry(self.frame1, textvariable=self.no_iter_input).grid(row=7, column=1, sticky="W")
 
         self.allow_indifferent_population_stop_input = tk.IntVar()
         self.allow_indifferent_population_stop_label = tk.Label(self.frame1,
-                                                                text="allow indifferent population stop").grid(row=7,
+                                                                text="allow indifferent population stop").grid(row=8,
                                                                                                                column=0,
                                                                                                                sticky="W")
         self.allow_indifferent_population_stop_button = tk.Checkbutton(self.frame1, text="",
                                                                        variable=self.allow_indifferent_population_stop_input).grid(
-            row=7, column=1, sticky="W")
+            row=8, column=1, sticky="W")
 
         self.population_diversity_measure_input = tk.StringVar(self.root)
         self.population_diversity_measure_input.set('Std of FF')
-        self.population_diversity_measure_label = tk.Label(self.frame1, text="population diversity measure").grid(row=8,
+        self.population_diversity_measure_label = tk.Label(self.frame1, text="population diversity measure").grid(row=9,
                                                                                                                   column=0,
                                                                                                                   sticky="W")
         self.population_diversity_measure_label_entry = tk.OptionMenu(self.frame1,
                                                                       self.population_diversity_measure_input,
-                                                                      'Roulette',
-                                                                      'Std of FF').grid(row=8, column=1, sticky="W")
+                                                                      'Std of FF').grid(row=9, column=1, sticky="W")
 
         self.pop_div_eps_input = tk.DoubleVar(self.root)
         self.pop_div_eps_input.set(1e-2)
-        self.pop_div_eps_label = tk.Label(self.frame1, text="pop div eps").grid(row=9, column=0, sticky="W")
-        self.pop_div_eps_entry = tk.Entry(self.frame1, textvariable=self.pop_div_eps_input).grid(row=9, column=1,
+        self.pop_div_eps_label = tk.Label(self.frame1, text="pop div eps").grid(row=10, column=0, sticky="W")
+        self.pop_div_eps_entry = tk.Entry(self.frame1, textvariable=self.pop_div_eps_input).grid(row=10, column=1,
                                                                                                  sticky="W")
 
         self.population_number_input = tk.DoubleVar(self.root)
         self.population_number_input.set(50)
-        self.population_number_label = tk.Label(self.frame1, text="population number").grid(row=10, column=0,
+        self.population_number_label = tk.Label(self.frame1, text="population number").grid(row=11, column=0,
                                                                                             sticky="W")
-        self.population_number_entry = tk.Entry(self.frame1, textvariable=self.population_number_input).grid(row=10,
+        self.population_number_entry = tk.Entry(self.frame1, textvariable=self.population_number_input).grid(row=11,
                                                                                                              column=1,
                                                                                                              sticky="W")
 
         self.hybrid_input = tk.IntVar()
         self.hybrid_input.set(0)
-        self.hybrid_label = tk.Label(self.frame1, text="hybrid").grid(row=11, column=0, sticky="W")
-        self.hybrid_button = tk.Checkbutton(self.frame1, text="", variable=self.hybrid_input).grid(row=11, column=1,
+        self.hybrid_label = tk.Label(self.frame1, text="hybrid").grid(row=12, column=0, sticky="W")
+        self.hybrid_button = tk.Checkbutton(self.frame1, text="", variable=self.hybrid_input).grid(row=12, column=1,
                                                                                                    sticky="W")
+
+
 
         # Sol
         self.problem_name_input = tk.StringVar(self.root)
@@ -262,7 +268,7 @@ class GUI:
         self.type_of_selection_label = tk.Label(self.frame1, text="type of selection").grid(row=16, column=0,
                                                                                             sticky="W")
         self.type_of_selection_entry = tk.OptionMenu(self.frame1, self.type_of_selection_input, 'Roulette',
-                                                     'Tournament', 'Boltzmann').grid(row=16, column=1, sticky="W")
+                                                     'Tournament').grid(row=16, column=1, sticky="W")
 
         self.elite_input = tk.IntVar()
         self.elite_input.set(1)
@@ -402,6 +408,7 @@ class GUI:
     def get_params(self):
         return {"allow_eps_ff_stop": bool(self.allow_eps_ff_stop_input.get()),
                 "eps_ff": int(self.eps_ff_input.get()),
+                "no_back": int(self.no_back_input.get()),
                 "eps_ff_type": str(self.eps_ff_type_input.get()),
                 "allow_no_iter_stop": bool(self.allow_no_iter_stop_input.get()),
                 "no_iter": int(self.no_iter_input.get()),
@@ -410,6 +417,7 @@ class GUI:
                 "pop_div_eps": float(self.pop_div_eps_input.get()),
                 "population_number": int(self.population_number_input.get()),
                 "hybrid": bool(self.hybrid_input.get()),
+
 
                 "problem_name": str(self.problem_name_input.get()),
                 "create_feasible": bool(self.create_feasible_input.get()),
