@@ -1,7 +1,7 @@
 import tkinter as tk
 from main import *
 import TimeSeriesProcessing
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 import numpy as np
 import matplotlib
@@ -192,26 +192,26 @@ class GUI:
 
         self.cost_of_death_input = tk.DoubleVar(self.root)
         self.cost_of_death_input.set(100)
-        self.cost_of_death_label = tk.Label(self.frame1, text="cost_of_death").grid(row=5, column=6, sticky="W")
+        self.cost_of_death_label = tk.Label(self.frame1, text="cost of death").grid(row=5, column=6, sticky="W")
         self.cost_of_death_entry = tk.Entry(self.frame1, textvariable=self.cost_of_death_input).grid(row=5, column=7,
                                                                                                      sticky="W")
 
         self.death_probability_input = tk.DoubleVar(self.root)
         self.death_probability_input.set(0.15)
-        self.death_probability_label = tk.Label(self.frame1, text="death_probability").grid(row=6, column=6, sticky="W")
+        self.death_probability_label = tk.Label(self.frame1, text="death probability").grid(row=6, column=6, sticky="W")
         self.death_probability_entry = tk.Entry(self.frame1, textvariable=self.death_probability_input).grid(row=6,
                                                                                                              column=7,
                                                                                                              sticky="W")
 
         self.training_cost_input = tk.DoubleVar(self.root)
         self.training_cost_input.set(4)
-        self.training_cost_label = tk.Label(self.frame1, text="training_cost").grid(row=7, column=6, sticky="W")
+        self.training_cost_label = tk.Label(self.frame1, text="training cost").grid(row=7, column=6, sticky="W")
         self.training_cost_entry = tk.Entry(self.frame1, textvariable=self.training_cost_input).grid(row=7, column=7,
                                                                                                      sticky="W")
 
         self.swabs_per_day_input = tk.DoubleVar(self.root)
         self.swabs_per_day_input.set(1)
-        self.swabs_per_day_label = tk.Label(self.frame1, text="swabs_per_day").grid(row=8, column=6, sticky="W")
+        self.swabs_per_day_label = tk.Label(self.frame1, text="swabs per_day").grid(row=8, column=6, sticky="W")
         self.swabs_per_day_entry = tk.Entry(self.frame1, textvariable=self.swabs_per_day_input).grid(row=8, column=7,
                                                                                                      sticky="W")
 
@@ -229,7 +229,7 @@ class GUI:
 
         self.cost_of_non_immediate_swab_input = tk.DoubleVar(self.root)
         self.cost_of_non_immediate_swab_input.set(10)
-        self.cost_of_non_immediate_swab_label = tk.Label(self.frame1, text="cost_of_non_immediate_swab").grid(row=9,
+        self.cost_of_non_immediate_swab_label = tk.Label(self.frame1, text="cost of non immediate_swab").grid(row=9,
                                                                                                               column=6,
                                                                                                               sticky="W")
         self.cost_of_non_immediate_swab_entry = tk.Entry(self.frame1,
@@ -238,7 +238,7 @@ class GUI:
 
         self.days_for_swab_input = tk.DoubleVar(self.root)
         self.days_for_swab_input.set(2)
-        self.days_for_swab_label = tk.Label(self.frame1, text="days_for_swab").grid(row=10, column=6, sticky="W")
+        self.days_for_swab_label = tk.Label(self.frame1, text="days for swab").grid(row=10, column=6, sticky="W")
         self.days_for_swab_entry = tk.Entry(self.frame1, textvariable=self.days_for_swab_input).grid(row=10, column=7,
                                                                                                      sticky="W")
         self.delayed_cost_input = tk.IntVar()
@@ -250,7 +250,7 @@ class GUI:
 
         self.learning_parameter_input = tk.DoubleVar(self.root)
         self.learning_parameter_input.set(0.2)
-        self.learning_parameter_label = tk.Label(self.frame1, text="learning_parameter").grid(row=12, column=6,
+        self.learning_parameter_label = tk.Label(self.frame1, text="learning parameter").grid(row=12, column=6,
                                                                                               sticky="W")
         self.learning_parameter_entry = tk.Entry(self.frame1, textvariable=self.learning_parameter_input).grid(row=12,
                                                                                                                column=7,
@@ -259,7 +259,7 @@ class GUI:
         # Sel
         self.type_of_selection_input = tk.StringVar(self.root)
         self.type_of_selection_input.set('Tournament')
-        self.type_of_selection_label = tk.Label(self.frame1, text="type_of_selection").grid(row=16, column=0,
+        self.type_of_selection_label = tk.Label(self.frame1, text="type of selection").grid(row=16, column=0,
                                                                                             sticky="W")
         self.type_of_selection_entry = tk.OptionMenu(self.frame1, self.type_of_selection_input, 'Roulette',
                                                      'Tournament', 'Boltzmann').grid(row=16, column=1, sticky="W")
@@ -278,7 +278,7 @@ class GUI:
 
         self.elite_count_input = tk.IntVar(self.root)
         self.elite_count_input.set(5)
-        self.elite_count_label = tk.Label(self.frame1, text="elite_count").grid(row=19, column=0, sticky="W")
+        self.elite_count_label = tk.Label(self.frame1, text="elite count").grid(row=19, column=0, sticky="W")
         self.elite_count_entry = tk.Entry(self.frame1, textvariable=self.elite_count_input).grid(row=19, column=1,
                                                                                                  sticky="W")
 
@@ -301,7 +301,7 @@ class GUI:
         # X
         self.type_of_crossover_input = tk.StringVar(self.root)
         self.type_of_crossover_input.set('Convex Combination')
-        self.type_of_crossover_label = tk.Label(self.frame1, text="type_of_crossover").grid(row=16, column=3,
+        self.type_of_crossover_label = tk.Label(self.frame1, text="type of crossover").grid(row=16, column=3,
                                                                                             sticky="W")
         self.type_of_crossover_entry = tk.OptionMenu(self.frame1, self.type_of_crossover_input, 'One Point',
                                                      'Two Points', 'Average', 'Convex Combination', 'Uniform').grid(
@@ -309,7 +309,7 @@ class GUI:
 
         self.crossover_probability_input = tk.DoubleVar(self.root)
         self.crossover_probability_input.set(0.3)
-        self.crossover_probability_label = tk.Label(self.frame1, text="crossover_probability").grid(row=17, column=3,
+        self.crossover_probability_label = tk.Label(self.frame1, text="crossover probability").grid(row=17, column=3,
                                                                                                     sticky="W")
         self.crossover_probability_entry = tk.Entry(self.frame1, textvariable=self.crossover_probability_input).grid(
             row=17, column=4, sticky="W")
@@ -324,7 +324,7 @@ class GUI:
 
         self.alpha_distribution_input = tk.StringVar(self.root)
         self.alpha_distribution_input.set('Arcsine')
-        self.alpha_distribution_label = tk.Label(self.frame1, text="alpha_distribution").grid(row=19, column=3,
+        self.alpha_distribution_label = tk.Label(self.frame1, text="alpha distribution").grid(row=19, column=3,
                                                                                               sticky="W")
         self.alpha_distribution_entry = tk.OptionMenu(self.frame1, self.alpha_distribution_input, 'Uniform',
                                                       'Arcsine').grid(row=19, column=4, sticky="W")
