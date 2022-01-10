@@ -4,7 +4,7 @@
   "eps_ff_type": "Best",
   "no_back": 50,
   "allow_no_iter_stop": true,
-  "no_iter": 3e3,
+  "no_iter": 1e4,
   "allow_indifferent_population_stop": false,
   "population_diversity_measure": "Std of FF",
   "pop_div_eps": 1e-2,
@@ -30,7 +30,7 @@
   "learning_type": null,
   "learning_parameter": 0.2,
 
-  "type_of_selection": "Roulette",
+  "type_of_selection": "Tournament",
   "elite": true,
   "truncation": false,
   "elite_count": 5,
@@ -41,12 +41,12 @@
   "type_of_crossover": "Convex Combination",
   "crossover_probability": 0.3,
   "distribution_of_cut": "Uniform",
-  "alpha_distribution": "Uniform",
+  "alpha_distribution": "Arcsine",
 
-  "type_of_mutation": "Cauchy",
+  "type_of_mutation": "Gaussian",
   "mutation_probability": 0.7,
   "mu": 0,
   "gamma": 2000,
   "mean": 0,
-  "std": 10
+  "std": 2000
 }
