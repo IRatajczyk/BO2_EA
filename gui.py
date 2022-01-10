@@ -23,9 +23,15 @@ class GUI:
         self.plot_label = tk.Label(self.frame2, text="PLOT").grid(row=0, column=0, padx=10, pady=10)
 
         # OTHERS
-        self.figure = Figure(figsize=(12, 6), dpi=100)
+        self.figure = Figure(figsize=(23, 12), dpi=50)
         self.subplot = self.figure.add_subplot(211)
         self.subplot2 = self.figure.add_subplot(212)
+
+        self.subplot.set_title("fitness history")
+        self.subplot.set_xlabel("week")
+        self.subplot.set_ylabel("no. of people")
+        self.subplot.set_title("Time series - soultion 1")
+        self.subplot2.set_title("fitness history")
 
         self.canvas = FigureCanvasTkAgg(self.figure, self.frame2)
         self.canvas.get_tk_widget().grid()
@@ -69,10 +75,11 @@ class GUI:
         self.eps_ff_entry = tk.Entry(self.frame1, textvariable=self.eps_ff_input).grid(row=3, column=1, sticky="W")
 
         self.eps_ff_type_input = tk.StringVar(self.root)
-        self.eps_ff_type_input.set('Average')
+        self.eps_ff_type_input.set('Best')
         self.eps_ff_type_label = tk.Label(self.frame1, text="eps ff type").grid(row=4, column=0, sticky="W")
-        self.eps_ff_type_entry = tk.OptionMenu(self.frame1, self.eps_ff_type_input, 'Average').grid(row=4, column=1,
-                                                                                                    sticky="W")
+        self.eps_ff_type_entry = tk.OptionMenu(self.frame1, self.eps_ff_type_input, 'Average', 'Best').grid(row=4,
+                                                                                                            column=1,
+                                                                                                            sticky="W")
 
         self.allow_no_iter_stop_input = tk.IntVar()
         self.allow_no_iter_stop_input.set(1)
@@ -101,8 +108,10 @@ class GUI:
         self.population_diversity_measure_label = tk.Label(self.frame1, text="population diversity measure").grid(row=8,
                                                                                                                   column=0,
                                                                                                                   sticky="W")
-        self.type_of_selection_entry = tk.OptionMenu(self.frame1, self.population_diversity_measure_input, 'Roulette',
-                                                     'Std of FF', ).grid(row=8, column=1, sticky="W")
+        self.population_diversity_measure_label_entry = tk.OptionMenu(self.frame1,
+                                                                      self.population_diversity_measure_input,
+                                                                      'Roulette',
+                                                                      'Std of FF').grid(row=8, column=1, sticky="W")
 
         self.pop_div_eps_input = tk.DoubleVar(self.root)
         self.pop_div_eps_input.set(1e-2)
@@ -117,6 +126,12 @@ class GUI:
         self.population_number_entry = tk.Entry(self.frame1, textvariable=self.population_number_input).grid(row=10,
                                                                                                              column=1,
                                                                                                              sticky="W")
+
+        self.hybrid_input = tk.IntVar()
+        self.hybrid_input.set(0)
+        self.hybrid_label = tk.Label(self.frame1, text="hybrid").grid(row=11, column=0, sticky="W")
+        self.hybrid_button = tk.Checkbutton(self.frame1, text="", variable=self.hybrid_input).grid(row=11, column=1,
+                                                                                                   sticky="W")
 
         # Sol
         self.problem_name_input = tk.StringVar(self.root)
@@ -164,8 +179,8 @@ class GUI:
                                                             'TimeSeriesCovidProblemNaive',
                                                             'TimeSeriesCovidProblem').grid(row=2, column=7, sticky="W")
 
-        self.learning_type_input = tk.StringVar(self.root)
-        self.learning_type_label = tk.Label(self.frame1, text="learning type").grid(row=3, column=6, sticky="W")
+        # self.learning_type_input = tk.StringVar(self.root)
+        # self.learning_type_label = tk.Label(self.frame1, text="learning type").grid(row=3, column=6, sticky="W")
         # self.learning_type_entry = tk.Entry(self.frame1, textvariable=self.learning_type_input).grid(row=3, column=7,
         #                                                                                              sticky="W")
 
@@ -200,43 +215,50 @@ class GUI:
         self.swabs_per_day_entry = tk.Entry(self.frame1, textvariable=self.swabs_per_day_input).grid(row=8, column=7,
                                                                                                      sticky="W")
 
-        self.delay_input = tk.DoubleVar(self.root)
+        self.delay_input = tk.IntVar()
         self.delay_input.set(1)
         self.delay_label = tk.Label(self.frame1, text="delay").grid(row=9, column=6, sticky="W")
         self.delay_entry = tk.Entry(self.frame1, textvariable=self.delay_input).grid(row=9, column=7, sticky="W")
 
+        # self.delay_input = tk.IntVar()
+        # self.delay_input.set(1)
+        # self.delay_label = tk.Label(self.frame1, text="delay").grid(row=9, column=6, sticky="W")
+        # self.delay_entry = tk.Checkbutton(self.frame1, text="",
+        #                                   variable=self.delay_input).grid(row=9, column=7,
+        #                                                                   sticky="W")
+
         self.cost_of_non_immediate_swab_input = tk.DoubleVar(self.root)
         self.cost_of_non_immediate_swab_input.set(10)
-        self.cost_of_non_immediate_swab_label = tk.Label(self.frame1, text="cost_of_non_immediate_swab").grid(row=10,
+        self.cost_of_non_immediate_swab_label = tk.Label(self.frame1, text="cost_of_non_immediate_swab").grid(row=9,
                                                                                                               column=6,
                                                                                                               sticky="W")
         self.cost_of_non_immediate_swab_entry = tk.Entry(self.frame1,
                                                          textvariable=self.cost_of_non_immediate_swab_input).grid(
-            row=10, column=7, sticky="W")
+            row=9, column=7, sticky="W")
 
         self.days_for_swab_input = tk.DoubleVar(self.root)
         self.days_for_swab_input.set(2)
-        self.days_for_swab_label = tk.Label(self.frame1, text="days_for_swab").grid(row=11, column=6, sticky="W")
-        self.days_for_swab_entry = tk.Entry(self.frame1, textvariable=self.days_for_swab_input).grid(row=11, column=7,
+        self.days_for_swab_label = tk.Label(self.frame1, text="days_for_swab").grid(row=10, column=6, sticky="W")
+        self.days_for_swab_entry = tk.Entry(self.frame1, textvariable=self.days_for_swab_input).grid(row=10, column=7,
                                                                                                      sticky="W")
         self.delayed_cost_input = tk.IntVar()
         self.delayed_cost_input.set(1)
-        self.delayed_cost_label = tk.Label(self.frame1, text="delayed cost").grid(row=12, column=6, sticky="W")
-        self.delayed_cost_button = tk.Checkbutton(self.frame1, text="", variable=self.delayed_cost_input).grid(row=12,
+        self.delayed_cost_label = tk.Label(self.frame1, text="delayed cost").grid(row=11, column=6, sticky="W")
+        self.delayed_cost_button = tk.Checkbutton(self.frame1, text="", variable=self.delayed_cost_input).grid(row=11,
                                                                                                                column=7,
                                                                                                                sticky="W")
 
         self.learning_parameter_input = tk.DoubleVar(self.root)
         self.learning_parameter_input.set(0.2)
-        self.learning_parameter_label = tk.Label(self.frame1, text="learning_parameter").grid(row=13, column=6,
+        self.learning_parameter_label = tk.Label(self.frame1, text="learning_parameter").grid(row=12, column=6,
                                                                                               sticky="W")
-        self.learning_parameter_entry = tk.Entry(self.frame1, textvariable=self.learning_parameter_input).grid(row=13,
+        self.learning_parameter_entry = tk.Entry(self.frame1, textvariable=self.learning_parameter_input).grid(row=12,
                                                                                                                column=7,
                                                                                                                sticky="W")
 
         # Sel
         self.type_of_selection_input = tk.StringVar(self.root)
-        self.type_of_selection_input.set('Roulette')
+        self.type_of_selection_input.set('Tournament')
         self.type_of_selection_label = tk.Label(self.frame1, text="type_of_selection").grid(row=16, column=0,
                                                                                             sticky="W")
         self.type_of_selection_entry = tk.OptionMenu(self.frame1, self.type_of_selection_input, 'Roulette',
@@ -301,7 +323,7 @@ class GUI:
             row=18, column=4, sticky="W")
 
         self.alpha_distribution_input = tk.StringVar(self.root)
-        self.alpha_distribution_input.set('Uniform')
+        self.alpha_distribution_input.set('Arcsine')
         self.alpha_distribution_label = tk.Label(self.frame1, text="alpha_distribution").grid(row=19, column=3,
                                                                                               sticky="W")
         self.alpha_distribution_entry = tk.OptionMenu(self.frame1, self.alpha_distribution_input, 'Uniform',
@@ -309,7 +331,7 @@ class GUI:
 
         # Mut
         self.type_of_mutation_input = tk.StringVar(self.root)
-        self.type_of_mutation_input.set('Cauchy')
+        self.type_of_mutation_input.set('Gaussian')
         self.type_of_mutation_label = tk.Label(self.frame1, text="type_of_mutation").grid(row=16, column=6, sticky="W")
         self.type_of_mutation_entry = tk.OptionMenu(self.frame1, self.type_of_mutation_input, 'Cauchy',
                                                     'Gaussian').grid(row=16, column=7, sticky="W")
@@ -337,20 +359,31 @@ class GUI:
         self.mean_entry = tk.Entry(self.frame1, textvariable=self.mean_input).grid(row=20, column=7, sticky="W")
 
         self.std_input = tk.DoubleVar(self.root)
-        self.std_input.set(10)
+        self.std_input.set(2000)
         self.std_label = tk.Label(self.frame1, text="std").grid(row=21, column=6, sticky="W")
         self.std_entry = tk.Entry(self.frame1, textvariable=self.std_input).grid(row=21, column=7, sticky="W")
 
         self.root.mainloop()
 
-    def make_figure(self, data, data2, data3):
+    def make_figure(self, data, data2, data3, data4):
         self.subplot.clear()
         self.subplot2.clear()
 
-        self.subplot.plot(np.arange(0, 52), data)
+        self.subplot.plot(np.arange(0, 52), data, label="COVID19 cases prediction")
+        self.subplot.plot(np.arange(0, 52), data4, label="medics needed (sol)")
+        self.subplot.legend(loc="upper right")
+        self.subplot.set_title("Time series - soultion 1")
+        self.subplot.set_xlabel("week")
+        self.subplot.set_ylabel("no. of people")
+        self.subplot.grid()
 
-        self.subplot2.plot(np.arange(0, len(data2)), data2)
-        self.subplot2.plot(np.arange(0, len(data3)), data3)
+        self.subplot2.plot(np.arange(0, len(data2)), data2, label="best")
+        self.subplot2.plot(np.arange(0, len(data3)), data3, label="average")
+        self.subplot2.legend(loc="upper right")
+        self.subplot2.set_title("fitness history")
+        self.subplot2.set_ylabel("fitness function value")
+        self.subplot2.set_xlabel("iteration")
+        self.subplot2.grid()
 
     def params_to_plot(self):
         self.frame1.pack_forget()
@@ -362,8 +395,8 @@ class GUI:
 
     def start(self):
         par = self.get_params()
-        result = self.do_this_shit(par)
-        self.make_figure(result[0], result[2], result[3])
+        result = self.do_algorithm(par)
+        self.make_figure(result[0], result[2], result[3], result[1][0])
         self.canvas.draw()
 
     def get_params(self):
@@ -376,6 +409,7 @@ class GUI:
                 "population_diversity_measure": str(self.population_diversity_measure_input.get()),
                 "pop_div_eps": float(self.pop_div_eps_input.get()),
                 "population_number": int(self.population_number_input.get()),
+                "hybrid": bool(self.hybrid_input.get()),
 
                 "problem_name": str(self.problem_name_input.get()),
                 "create_feasible": bool(self.create_feasible_input.get()),
@@ -390,13 +424,10 @@ class GUI:
                 "cost_of_death": float(self.cost_of_death_input.get()),
                 "training_cost": float(self.training_cost_input.get()),
                 "swabs_per_day": int(self.swabs_per_day_input.get()),
-                "delay": float(self.delay_input.get()),
                 "cost_of_non_immediate_swab": float(self.cost_of_non_immediate_swab_input.get()),
                 "days_for_swab": int(self.days_for_swab_input.get()),
                 "delayed_cost": bool(self.delayed_cost_input),
-                "learning_type": str(self.learning_type_input.get()),
                 "learning_parameter": float(self.learning_parameter_input.get()),
-
                 "type_of_selection": str(self.type_of_selection_input.get()),
                 "elite": bool(self.elite_input.get()),
                 "truncation": bool(self.truncation_input.get()),
@@ -422,7 +453,7 @@ class GUI:
         params = utils.load_config() if os.path.isfile("data/config.json") else dict()
         return params
 
-    def do_this_shit(self, params: dict):
+    def do_algorithm(self, params: dict):
         TS_param = TimeSeriesProcessing.TimeSeriesProcessingParameters(model_type="ARIMA")
         TS = TimeSeriesProcessing.TimeSeries(TS_param)
 
