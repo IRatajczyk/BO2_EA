@@ -77,7 +77,7 @@ class Crossover:
         if solution1.shape != solution2.shape:
             raise ValueError(f"Solution shapes {solution1.shape} and {solution2.shape} don't match!")
         x = (0.5 * solution1 + 0.5 * solution2).astype(int)
-        return x #, x (???)
+        return x, x
 
     def __cross_convex(self, solution1: np.ndarray, solution2: np.ndarray) -> (np.ndarray, np.ndarray):
         if solution1.shape != solution2.shape:
