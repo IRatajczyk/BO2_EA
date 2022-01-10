@@ -9,6 +9,7 @@
   "population_diversity_measure": "Std of FF",
   "pop_div_eps": 1e-2,
   "population_number": 50,
+  "hybrid": true,
 
   "problem_name": "TSOCOV19D",
   "create_feasible": true,
